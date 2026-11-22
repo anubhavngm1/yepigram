@@ -1,6 +1,6 @@
 {
-  "name": "Yepigram - E2EE Social & Chat",
-  "short_name": "Yepigram",
+  "name": "Yapergram - E2EE Social & Chat",
+  "short_name": "Yapergram",
   "description": "End-to-End Encrypted Liquid Glass Real-Time Messaging and Social Media",
   "start_url": "./index.html",
   "display": "standalone",
