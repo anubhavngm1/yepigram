@@ -369,6 +369,12 @@ def get_offline_messages(recipient_id):
     conn.close()
     return msgs
 
+def queue_offline_message(message_id, recipient_id, sender_id, encrypted_payload):
+    return save_message(message_id, sender_id, recipient_id, encrypted_payload, status='sent')
+
+def fetch_queued_messages(recipient_id):
+    return get_offline_messages(recipient_id)
+
 def get_chat_history(user1_id, user2_id, limit=50):
     conn = get_connection()
     cursor = conn.cursor()
