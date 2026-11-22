@@ -4,8 +4,131 @@ import json
 import time
 import hashlib
 import secrets
+import threading
+import requests
+import base64
 
 DB_PATH = os.path.join(os.path.dirname(__file__), "yapergram.db")
+GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN", "")
+GITHUB_REPO = os.environ.get("GITHUB_REPO", "anubhavngm1/yepigram")
+
+def restore_from_github():
+    """Restores SQLite state from GitHub persistent repository backup"""
+    if not GITHUB_TOKEN or not GITHUB_REPO:
+        return
+    try:
+        url = f"https://api.github.com/repos/{GITHUB_REPO}/contents/backend/db_sync.json"
+        headers = {
+            "Authorization": f"token {GITHUB_TOKEN}",
+            "Accept": "application/vnd.github.v3+json"
+        }
+        r = requests.get(url, headers=headers, timeout=8)
+        if r.status_code == 200:
+            b64_data = r.json().get("content", "")
+            raw_json = base64.b64decode(b64_data).decode("utf-8")
+            data = json.loads(raw_json)
+            
+            conn = get_connection()
+            cursor = conn.cursor()
+            
+            for u in data.get("users", []):
+                cursor.execute("""
+                INSERT OR REPLACE INTO users (user_id, username, password_hash, salt, display_name, avatar, bio, identity_key, created_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """, (u["user_id"], u["username"], u["password_hash"], u["salt"], u["display_name"], u["avatar"], u["bio"], u["identity_key"], u["created_at"]))
+                
+            for s in data.get("sessions", []):
+                cursor.execute("""
+                INSERT OR REPLACE INTO sessions (token, user_id, created_at)
+                VALUES (?, ?, ?)
+                """, (s["token"], s["user_id"], s["created_at"]))
+                
+            for c in data.get("chats", []):
+                cursor.execute("""
+                INSERT OR REPLACE INTO chats (chat_id, user1_id, user2_id, is_locked, pin_hash, last_message, last_timestamp, created_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                """, (c["chat_id"], c["user1_id"], c["user2_id"], c.get("is_locked", 0), c.get("pin_hash", ""), c.get("last_message", ""), c.get("last_timestamp", 0), c["created_at"]))
+                
+            for m in data.get("messages", []):
+                cursor.execute("""
+                INSERT OR REPLACE INTO messages (message_id, sender_id, recipient_id, encrypted_payload, status, timestamp)
+                VALUES (?, ?, ?, ?, ?, ?)
+                """, (m["message_id"], m["sender_id"], m["recipient_id"], m["encrypted_payload"], m["status"], m["timestamp"]))
+                
+            for st in data.get("stories", []):
+                cursor.execute("""
+                INSERT OR REPLACE INTO stories (story_id, user_id, media_url, text_content, bg_gradient, created_at, expires_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
+                """, (st["story_id"], st["user_id"], st["media_url"], st["text_content"], st["bg_gradient"], st["created_at"], st["expires_at"]))
+                
+            conn.commit()
+            conn.close()
+            print(f"✔ Restored {len(data.get('users', []))} users and messages from GitHub persistent store.")
+    except Exception as e:
+        print(f"Notice: GitHub restore check: {e}")
+
+def _background_sync_worker():
+    if not GITHUB_TOKEN or not GITHUB_REPO:
+        return
+    try:
+        conn = get_connection()
+        cursor = conn.cursor()
+        
+        cursor.execute("SELECT * FROM users")
+        users = [dict(r) for r in cursor.fetchall()]
+        
+        cursor.execute("SELECT * FROM sessions")
+        sessions = [dict(r) for r in cursor.fetchall()]
+        
+        cursor.execute("SELECT * FROM chats")
+        chats = [dict(r) for r in cursor.fetchall()]
+        
+        cursor.execute("SELECT * FROM messages")
+        messages = [dict(r) for r in cursor.fetchall()]
+        
+        cursor.execute("SELECT * FROM stories")
+        stories = [dict(r) for r in cursor.fetchall()]
+        
+        conn.close()
+        
+        data_to_save = {
+            "users": users,
+            "sessions": sessions,
+            "chats": chats,
+            "messages": messages,
+            "stories": stories
+        }
+        
+        json_str = json.dumps(data_to_save, indent=2)
+        b64_content = base64.b64encode(json_str.encode("utf-8")).decode("utf-8")
+        
+        url = f"https://api.github.com/repos/{GITHUB_REPO}/contents/backend/db_sync.json"
+        headers = {
+            "Authorization": f"token {GITHUB_TOKEN}",
+            "Accept": "application/vnd.github.v3+json"
+        }
+        
+        sha = None
+        check_r = requests.get(url, headers=headers, timeout=6)
+        if check_r.status_code == 200:
+            sha = check_r.json().get("sha")
+            
+        payload = {
+            "message": "Auto-persist Yapergram DB state",
+            "content": b64_content,
+            "branch": "main"
+        }
+        if sha:
+            payload["sha"] = sha
+            
+        requests.put(url, json=payload, headers=headers, timeout=10)
+    except Exception:
+        pass
+
+def trigger_github_sync():
+    """Trigger non-blocking background sync of database to GitHub"""
+    t = threading.Thread(target=_background_sync_worker, daemon=True)
+    t.start()
 
 def get_connection():
     conn = sqlite3.connect(DB_PATH)
@@ -102,6 +225,9 @@ def init_db():
 
     conn.commit()
     conn.close()
+    
+    # Auto restore persistent state from GitHub on boot
+    restore_from_github()
 
 # -------------------------------------------------------------
 # User Authentication & Profiles
@@ -132,6 +258,7 @@ def register_user(username, password, display_name="", avatar="", identity_key="
 
     conn.commit()
     conn.close()
+    trigger_github_sync()
     return {
         "user_id": user_id,
         "username": username,
@@ -146,6 +273,10 @@ def login_user(username, password):
     cursor.execute("SELECT * FROM users WHERE LOWER(username) = LOWER(?)", (username,))
     row = cursor.fetchone()
     if not row:
+        restore_from_github()
+        cursor.execute("SELECT * FROM users WHERE LOWER(username) = LOWER(?)", (username,))
+        row = cursor.fetchone()
+    if not row:
         conn.close()
         return None, "Invalid username or password"
 
@@ -158,6 +289,7 @@ def login_user(username, password):
     cursor.execute("INSERT INTO sessions (token, user_id, created_at) VALUES (?, ?, ?)", (token, row["user_id"], int(time.time())))
     conn.commit()
     conn.close()
+    trigger_github_sync()
 
     return {
         "user_id": row["user_id"],
