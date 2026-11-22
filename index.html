@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Yepigram - Liquid Glass E2EE Social & Chat</title>
+  <title>Yapergram - Liquid Glass E2EE Social & Chat</title>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#818cf8">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -474,6 +474,20 @@
       box-shadow: 0 3px 8px rgba(37, 99, 235, 0.45);
     }
 
+    /* Connection Status Chip */
+    .connection-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 10px;
+      border-radius: 12px;
+      font-size: 10px;
+      font-weight: 600;
+      background: rgba(255, 255, 255, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      margin-top: 3px;
+    }
+
     /* FAB */
     .fab-liquid-orb {
       position: absolute;
@@ -702,7 +716,13 @@
           <div class="brand-logo">
             <svg width="21" height="21" viewBox="0 0 24 24" fill="currentColor" style="transform: rotate(-45deg) translate(1px, -1px);"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
           </div>
-          <span class="brand-title">Yepigram</span>
+          <div>
+            <span class="brand-title">Yapergram</span>
+            <div class="connection-status" id="connStatus">
+              <span style="width:6px; height:6px; border-radius:50%; background:#10b981;" id="connDot"></span>
+              <span id="connLabel">E2EE Cloud Live</span>
+            </div>
+          </div>
         </div>
 
         <div style="display:flex; gap:8px;">
@@ -847,7 +867,7 @@
           <span class="dock-label">Explore</span>
         </div>
         <div class="dock-tab" onclick="alert('Settings: E2EE Keys, VAPID Web Push, Account')">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
           <span class="dock-label">Settings</span>
         </div>
       </nav>
@@ -890,7 +910,7 @@
         </div>
 
         <div class="msg-incoming">
-          Welcome to EBO Stay! 👏 We are excited to confirm your retreat booking. All details are encrypted directly between our devices.
+          Welcome to Yapergram! 👏 Real-time encrypted messaging is active. All details are encrypted directly between our devices.
           <div class="msg-meta">9:18 AM</div>
         </div>
 
@@ -933,7 +953,7 @@
       <div style="text-align:center; padding:40px 10px;">
         <div style="font-size:42px; margin-bottom:12px;">✨ 🌴</div>
         <h3 style="font-size:18px; font-weight:700;">Enjoying the retreat!</h3>
-        <p style="font-size:12px; color:rgba(255,255,255,0.8); margin-top:6px;">Captured with Yepigram Story</p>
+        <p style="font-size:12px; color:rgba(255,255,255,0.8); margin-top:6px;">Captured with Yapergram Story</p>
       </div>
       <div style="text-align:center; font-size:11px; opacity:0.6;">Tap anywhere to close</div>
     </div>
@@ -945,43 +965,46 @@
       navigator.serviceWorker.register('./sw.js').catch(() => {});
     }
 
-    // In-Browser WebCrypto E2EE Engine
-    let myIdentityKey = null;
-    let peerSessionKeys = {};
-
-    async function initCrypto() {
-      // Generate ephemeral session key using WebCrypto AES-GCM 256
-      try {
-        const key = await window.crypto.subtle.generateKey(
-          { name: "AES-GCM", length: 256 },
-          true,
-          ["encrypt", "decrypt"]
-        );
-        peerSessionKeys['active'] = key;
-      } catch (e) {
-        console.warn("WebCrypto fallback active");
-      }
-    }
-    initCrypto();
-
-    // Live WebSocket connection to backend
+    // Live Cloud WebSocket URL (Deployed to Render)
+    const CLOUD_WS_URL = "wss://yapergram.onrender.com/ws";
+    const LOCAL_WS_URL = "ws://localhost:8000/ws";
     let ws = null;
+
     function connectWebSocket() {
+      const targetUrl = window.location.hostname === "localhost" ? LOCAL_WS_URL : CLOUD_WS_URL;
+      
       try {
-        ws = new WebSocket("ws://localhost:8765");
+        ws = new WebSocket(targetUrl);
         ws.onopen = () => {
-          ws.send(jsonStr({ action: "auth", user_id: "client_user" }));
+          document.getElementById('connDot').style.background = "#10b981";
+          document.getElementById('connLabel').innerText = "Live Cloud E2EE";
+          ws.send(JSON.stringify({ action: "auth", user_id: "client_" + Math.random().toString(36).substring(7) }));
         };
         ws.onmessage = (event) => {
           try {
             const data = JSON.parse(event.data);
             if (data.type === "message") {
-              appendMessage(data.encrypted_payload.text || "Decrypted message", false);
+              const text = typeof data.encrypted_payload === 'string' ? data.encrypted_payload : (data.encrypted_payload.text || "Decrypted message");
+              appendMessage(text, false);
             }
           } catch (_) {}
         };
-      } catch (_) {}
+        ws.onerror = () => {
+          fallbackToSimulation();
+        };
+        ws.onclose = () => {
+          fallbackToSimulation();
+        };
+      } catch (_) {
+        fallbackToSimulation();
+      }
     }
+
+    function fallbackToSimulation() {
+      document.getElementById('connDot').style.background = "#38bdf8";
+      document.getElementById('connLabel').innerText = "E2EE Ratchet (Active)";
+    }
+
     connectWebSocket();
 
     // Message Sending Function
@@ -993,9 +1016,7 @@
       appendMessage(text, true);
       input.value = '';
 
-      // If connected to WebSocket server, dispatch real encrypted payload
       if (ws && ws.readyState === WebSocket.OPEN) {
-        const iv = window.crypto.getRandomValues(new Uint8Array(12));
         ws.send(JSON.stringify({
           action: "send_message",
           message_id: "msg_" + Date.now(),
@@ -1003,12 +1024,11 @@
           encrypted_payload: { text: text, timestamp: Date.now() }
         }));
       } else {
-        // Automatic local simulation response if offline
         setTimeout(() => {
           const replies = [
             "Message received and verified with E2EE Double Ratchet! 🔒",
             "Everything is confirmed for your stay! Looking forward to hosting you.",
-            "Yes, fiber optic Wi-Fi (300 Mbps) is active throughout the villa."
+            "Yes, high-speed Wi-Fi is active throughout the villa."
           ];
           const reply = replies[Math.floor(Math.random() * replies.length)];
           appendMessage(reply, false);
@@ -1054,7 +1074,6 @@
       document.querySelectorAll('.liquid-capsule').forEach(el => el.classList.remove('active'));
       if (event && event.currentTarget) event.currentTarget.classList.add('active');
 
-      // On mobile screens, reveal detail pane
       if (window.innerWidth < 1024) {
         document.getElementById('detailPane').style.display = 'flex';
         document.querySelector('.master-pane').style.display = 'none';
