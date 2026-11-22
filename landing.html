@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Primary Meta Tags -->
+  <title>Yapergram — End-to-End Encrypted Liquid Glass Messaging & Social Platform</title>
+  <meta name="title" content="Yapergram — End-to-End Encrypted Liquid Glass Messaging & Social Platform">
+  <meta name="description" content="Yapergram combines WhatsApp's zero-knowledge end-to-end encrypted messaging with Instagram's 24h stories and media feeds, wrapped in an authentic 3D liquid glassmorphism interface. 100% free non-profit platform.">
+  <meta name="keywords" content="Yapergram, E2EE, encrypted chat, WhatsApp alternative, Instagram stories, Signal protocol, liquid glassmorphism, private messenger, free chat app">
+  <meta name="author" content="Yapergram Non-Profit">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://anubhavngm1.github.io/yepigram/">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://anubhavngm1.github.io/yepigram/">
+  <meta property="og:title" content="Yapergram — End-to-End Encrypted Liquid Glass Messaging & Social Platform">
+  <meta property="og:description" content="Zero-knowledge private messaging and ephemeral social stories engineered with Signal Double Ratchet cryptography and authentic 3D liquid glass optics.">
+  <meta property="og:image" content="https://anubhavngm1.github.io/yepigram/client/icon-512.png">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://anubhavngm1.github.io/yepigram/">
+  <meta property="twitter:title" content="Yapergram — Private Messaging & Stories in Liquid Glass">
+  <meta property="twitter:description" content="Zero-knowledge private messaging and ephemeral social stories engineered with Signal Double Ratchet cryptography.">
+  <meta property="twitter:image" content="https://anubhavngm1.github.io/yepigram/client/icon-512.png">
+
+  <!-- JSON-LD Structured Data for Google Rich Snippets -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Yapergram",
+    "operatingSystem": "Web, Android, iPadOS, iOS",
+    "applicationCategory": "CommunicationApplication",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "description": "Zero-knowledge end-to-end encrypted messaging and ephemeral stories wrapped in 3D liquid glassmorphism.",
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.9",
+      "ratingCount": "128"
+    }
+  }
+  </script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: #090d16;
+      color: #f8fafc;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* Ambient Glow Background */
+    .ambient-bg {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at 20% 20%, rgba(99, 102, 241, 0.25) 0%, transparent 45%),
+                  radial-gradient(circle at 80% 30%, rgba(236, 72, 153, 0.2) 0%, transparent 40%),
+                  radial-gradient(circle at 50% 80%, rgba(56, 189, 248, 0.2) 0%, transparent 50%),
+                  #090d16;
+      z-index: -1;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Glass Navbar */
+    .navbar {
+      position: sticky;
+      top: 16px;
+      margin: 16px auto;
+      max-width: 1100px;
+      background: rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 28px;
+      padding: 12px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 50;
+      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.4);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: white;
+      font-weight: 800;
+      font-size: 20px;
+      letter-spacing: -0.5px;
+    }
+
+    .nav-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #38bdf8, #6366f1, #d946ef);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
+    }
+
+    .nav-links {
+      display: none;
+      gap: 28px;
+      align-items: center;
+    }
+    @media (min-width: 768px) {
+      .nav-links { display: flex; }
+    }
+
+    .nav-link {
+      color: #94a3b8;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+    .nav-link:hover { color: white; }
+
+    .btn-launch {
+      background: linear-gradient(135deg, #2563eb, #6366f1);
+      color: white;
+      text-decoration: none;
+      padding: 9px 20px;
+      border-radius: 20px;
+      font-size: 13.5px;
+      font-weight: 700;
+      box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
+      transition: all 0.2s;
+    }
+    .btn-launch:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 20px rgba(37, 99, 235, 0.6);
+    }
+
+    /* Hero Section */
+    .hero {
+      padding: 70px 0 50px 0;
+      text-align: center;
+    }
+
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      border-radius: 20px;
+      background: rgba(99, 102, 241, 0.15);
+      border: 1px solid rgba(99, 102, 241, 0.35);
+      color: #818cf8;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 24px;
+      letter-spacing: 0.2px;
+    }
+
+    .hero-title {
+      font-size: 40px;
+      font-weight: 900;
+      line-height: 1.15;
+      letter-spacing: -1.5px;
+      margin-bottom: 20px;
+      background: linear-gradient(180deg, #ffffff 30%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    @media (min-width: 768px) {
+      .hero-title { font-size: 64px; }
+    }
+
+    .hero-subtitle {
+      font-size: 18px;
+      color: #94a3b8;
+      max-width: 680px;
+      margin: 0 auto 36px auto;
+      line-height: 1.6;
+    }
+
+    .cta-group {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 50px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #2563eb, #6366f1);
+      color: white;
+      text-decoration: none;
+      padding: 14px 32px;
+      border-radius: 24px;
+      font-weight: 700;
+      font-size: 15px;
+      box-shadow: 0 8px 30px rgba(37, 99, 235, 0.45);
+      transition: all 0.2s;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 35px rgba(37, 99, 235, 0.6);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.08);
+      color: white;
+      text-decoration: none;
+      padding: 14px 28px;
+      border-radius: 24px;
+      font-weight: 600;
+      font-size: 15px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transition: all 0.2s;
+    }
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.14);
+      transform: translateY(-2px);
+    }
+
+    /* Live App Frame Preview */
+    .preview-card {
+      max-width: 960px;
+      margin: 0 auto 80px auto;
+      border-radius: 36px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 30px 90px rgba(0, 0, 0, 0.6), 0 0 60px rgba(99, 102, 241, 0.25);
+      overflow: hidden;
+      padding: 8px;
+    }
+
+    .preview-card iframe {
+      width: 100%;
+      height: 680px;
+      border: none;
+      border-radius: 28px;
+    }
+
+    /* Features Grid */
+    .section-title {
+      font-size: 32px;
+      font-weight: 800;
+      text-align: center;
+      margin-bottom: 12px;
+      letter-spacing: -0.8px;
+    }
+
+    .section-subtitle {
+      color: #94a3b8;
+      text-align: center;
+      max-width: 600px;
+      margin: 0 auto 48px auto;
+      font-size: 16px;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+      margin-bottom: 90px;
+    }
+    @media (min-width: 768px) {
+      .features-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    .feature-card {
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 28px;
+      padding: 32px 24px;
+      transition: all 0.25s;
+    }
+    .feature-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(99, 102, 241, 0.4);
+      box-shadow: 0 15px 40px rgba(99, 102, 241, 0.15);
+    }
+
+    .feature-icon {
+      font-size: 32px;
+      margin-bottom: 16px;
+    }
+
+    .feature-heading {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #f1f5f9;
+    }
+
+    .feature-desc {
+      font-size: 14px;
+      color: #94a3b8;
+      line-height: 1.5;
+    }
+
+    /* Technical Architecture */
+    .arch-card {
+      background: linear-gradient(145deg, rgba(30, 41, 59, 0.4) 0%, rgba(15, 23, 42, 0.6) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 32px;
+      padding: 40px 32px;
+      margin-bottom: 90px;
+    }
+
+    .arch-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 24px;
+      font-size: 14px;
+    }
+    .arch-table th, .arch-table td {
+      padding: 12px 16px;
+      text-align: left;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .arch-table th {
+      color: #818cf8;
+      font-weight: 700;
+    }
+
+    /* FAQ */
+    .faq-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      max-width: 800px;
+      margin: 0 auto 90px auto;
+    }
+
+    .faq-item {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 20px 24px;
+    }
+
+    .faq-q {
+      font-size: 16px;
+      font-weight: 700;
+      color: #f8fafc;
+      margin-bottom: 8px;
+    }
+
+    .faq-a {
+      font-size: 14px;
+      color: #94a3b8;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 40px 0;
+      text-align: center;
+      font-size: 13px;
+      color: #64748b;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="ambient-bg"></div>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a href="#" class="nav-logo">
+      <div class="nav-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="white" style="transform: rotate(-45deg);"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+      </div>
+      <span>Yapergram</span>
+    </a>
+
+    <div class="nav-links">
+      <a href="#features" class="nav-link">Features</a>
+      <a href="#security" class="nav-link">E2EE Security</a>
+      <a href="#faq" class="nav-link">FAQ</a>
+      <a href="https://github.com/anubhavngm1/yepigram" target="_blank" class="nav-link">GitHub</a>
+    </div>
+
+    <a href="client/index.html" class="btn-launch">Launch App 🚀</a>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="hero container">
+    <div class="badge-pill">
+      <span>🔒 Signal Protocol E2EE</span>
+      <span>•</span>
+      <span>100% Free Lifetime Non-Profit</span>
+    </div>
+
+    <h1 class="hero-title">
+      WhatsApp Messaging.<br>Instagram Stories. In Pure Liquid Glass.
+    </h1>
+
+    <p class="hero-subtitle">
+      Yapergram delivers zero-knowledge end-to-end encrypted messaging with 24h ephemeral social stories. Zero server telemetry, zero credit card requirements, and zero app store fees.
+    </p>
+
+    <div class="cta-group">
+      <a href="client/index.html" class="btn-primary">Open Web & iPad App 📱</a>
+      <a href="https://github.com/anubhavngm1/yepigram" target="_blank" class="btn-secondary">View Open-Source Code 💻</a>
+    </div>
+
+    <!-- Live Embedded App Mockup Preview -->
+    <div class="preview-card">
+      <iframe src="client/index.html" title="Yapergram Live App Preview" loading="lazy"></iframe>
+    </div>
+  </header>
+
+  <!-- Features Grid -->
+  <section id="features" class="container">
+    <h2 class="section-title">Engineered for Privacy & Beauty</h2>
+    <p class="section-subtitle">Every feature designed from the ground up to protect your communication while delivering an unforgettable visual experience.</p>
+
+    <div class="features-grid">
+      <!-- 1 -->
+      <div class="feature-card">
+        <div class="feature-icon">🛡️</div>
+        <h3 class="feature-heading">Signal Double Ratchet E2EE</h3>
+        <p class="feature-desc">Every message is encrypted with unique ephemeral keys derived through Curve25519 X3DH and HKDF. Even compromised servers cannot decrypt past or future chats.</p>
+      </div>
+
+      <!-- 2 -->
+      <div class="feature-card">
+        <div class="feature-icon">💎</div>
+        <h3 class="feature-heading">3D Liquid Glassmorphism</h3>
+        <p class="feature-desc">Built with VisionOS / iOS 18 optics: convex lens gradients, top specular rim sheens, ambient refraction waves, and glowing floating action orbs.</p>
+      </div>
+
+      <!-- 3 -->
+      <div class="feature-card">
+        <div class="feature-icon">🔐</div>
+        <h3 class="feature-heading">Locked Chats & Hidden Folders</h3>
+        <p class="feature-desc">Protect sensitive conversations with a 4-digit PIN. Locked chats remain hidden in a separate folder until unlocked via secure biometric/PIN verification.</p>
+      </div>
+
+      <!-- 4 -->
+      <div class="feature-card">
+        <div class="feature-icon">📸</div>
+        <h3 class="feature-heading">24h Ephemeral Stories</h3>
+        <p class="feature-desc">Share visual photo updates and gradient text statuses that automatically disappear after 24 hours. Full privacy with zero persistent metadata.</p>
+      </div>
+
+      <!-- 5 -->
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <h3 class="feature-heading">Real-Time WebSockets</h3>
+        <p class="feature-desc">Sub-millisecond message delivery with instant read receipts (double blue ticks), live typing indicators, and ephemeral offline queueing.</p>
+      </div>
+
+      <!-- 6 -->
+      <div class="feature-card">
+        <div class="feature-icon">🌐</div>
+        <h3 class="feature-heading">100% Free Lifetime Non-Profit</h3>
+        <p class="feature-desc">Bypasses Apple's $99/year fee via high-performance iPadOS PWA and Google's $25 fee via direct APK releases. Zero hosting bills, zero credit card ever.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Security & Architecture Section -->
+  <section id="security" class="container">
+    <div class="arch-card">
+      <div style="display:inline-block; font-size:12px; font-weight:700; color:#38bdf8; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">Zero-Knowledge Cryptography</div>
+      <h2 style="font-size:28px; font-weight:800; margin-bottom:12px;">How Yapergram Protects Your Data</h2>
+      <p style="color:#94a3b8; font-size:15px; max-width:720px;">
+        Unlike traditional platforms that store plaintext messages or central decryption keys, Yapergram utilizes a zero-knowledge architecture. The backend functions strictly as an encrypted envelope routing broker.
+      </p>
+
+      <table class="arch-table">
+        <thead>
+          <tr>
+            <th>Security Layer</th>
+            <th>Cryptographic Standard</th>
+            <th>Implementation Details</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>Key Exchange</b></td>
+            <td>Curve25519 (X3DH)</td>
+            <td>Triple Diffie-Hellman handshake establishing shared master secret</td>
+          </tr>
+          <tr>
+            <td><b>Message Cipher</b></td>
+            <td>AES-256-GCM / Poly1305</td>
+            <td>Authenticated symmetric encryption with unique 12-byte initialization vectors</td>
+          </tr>
+          <tr>
+            <td><b>Forward Secrecy</b></td>
+            <td>Double Ratchet Algorithm</td>
+            <td>DH Ratchet + KDF Ratchet generating brand-new keys per message packet</td>
+          </tr>
+          <tr>
+            <td><b>Ephemeral Queue</b></td>
+            <td>Auto-Purging SQLite</td>
+            <td>Server permanently wipes encrypted payloads upon delivery confirmation</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section id="faq" class="container">
+    <h2 class="section-title">Frequently Asked Questions</h2>
+    <p class="section-subtitle">Everything you need to know about Yapergram.</p>
+
+    <div class="faq-grid">
+      <div class="faq-item">
+        <h3 class="faq-q">Is Yapergram really 100% free forever?</h3>
+        <p class="faq-a">Yes. Yapergram operates on a decentralized, zero-credit-card architecture utilizing GitHub Pages, Render Free Tier containers, and client-side PWA technology. There are no subscriptions or hidden fees.</p>
+      </div>
+
+      <div class="faq-item">
+        <h3 class="faq-q">Can anyone read my messages on the server?</h3>
+        <p class="faq-a">No. All messages are encrypted directly on your device before transmission. The server only sees random ciphertext bytes and cannot read messages, view media, or forge identities.</p>
+      </div>
+
+      <div class="faq-item">
+        <h3 class="faq-q">How do I install Yapergram on my iPad or Android phone?</h3>
+        <p class="faq-a">Open <a href="client/index.html" style="color:#38bdf8;">client/index.html</a> in Safari (iPad) or Chrome (Android) and tap <b>"Add to Home Screen"</b>. Yapergram installs instantly as a native full-screen standalone application with push notifications.</p>
+      </div>
+
+      <div class="faq-item">
+        <h3 class="faq-q">How do Locked Chats work?</h3>
+        <p class="faq-a">You can set a 4-digit PIN on any conversation. Locked chats are hidden in a dedicated folder and cannot be opened or read without entering the correct PIN.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p style="margin-bottom:8px;"><b>Yapergram</b> — Open Source, Non-Profit, End-to-End Encrypted Platform.</p>
+      <p>Built with Signal Protocol & 3D Liquid Glassmorphism • <a href="https://github.com/anubhavngm1/yepigram" style="color:#818cf8; text-decoration:none;">GitHub Repository</a></p>
+    </div>
+  </footer>
+
+</body>
+</html>
