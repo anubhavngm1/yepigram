@@ -15,43 +15,47 @@ def run_comprehensive_tests():
     database.init_db()
     print("✔ 1. Database initialized successfully.")
 
-    # 2. Test User Registration
-    user1, err1 = database.register_user("alex_dev", "secret123", "Alex Dev", "avatar1.png", "ik_alex_bytes")
-    assert err1 is None, f"Registration failed: {err1}"
-    assert user1["username"] == "alex_dev"
-    assert "token" in user1
-    print(f"✔ 2. User 'alex_dev' registered with ID: {user1['user_id']}.")
+    ts = int(time.time() * 1000) % 1000000
+    u1_name = f"alex_{ts}"
+    u2_name = f"sara_{ts}"
 
-    user2, err2 = database.register_user("sara_ux", "pass456", "Sara Design", "avatar2.png", "ik_sara_bytes")
+    # 2. Test User Registration
+    user1, err1 = database.register_user(u1_name, "secret123", "Alex Dev", "avatar1.png", "ik_alex_bytes")
+    assert err1 is None, f"Registration failed: {err1}"
+    assert user1["username"] == u1_name
+    assert "token" in user1
+    print(f"✔ 2. User '{u1_name}' registered with ID: {user1['user_id']}.")
+
+    user2, err2 = database.register_user(u2_name, "pass456", "Sara Design", "avatar2.png", "ik_sara_bytes")
     assert err2 is None
-    print(f"✔ 3. User 'sara_ux' registered with ID: {user2['user_id']}.")
+    print(f"✔ 3. User '{u2_name}' registered with ID: {user2['user_id']}.")
 
     # Duplicate username check
-    dup_user, dup_err = database.register_user("alex_dev", "pass789")
+    dup_user, dup_err = database.register_user(u1_name, "pass789")
     assert dup_err is not None
     print("✔ 4. Duplicate username registration properly rejected.")
 
     # 3. Test Login
-    login_success, err = database.login_user("alex_dev", "secret123")
+    login_success, err = database.login_user(u1_name, "secret123")
     assert err is None
     assert login_success["user_id"] == user1["user_id"]
-    print("✔ 5. User login succeeded with correct credentials.")
+    print(f"✔ 5. User login succeeded with correct credentials.")
 
-    login_fail, err = database.login_user("alex_dev", "wrongpass")
+    login_fail, err = database.login_user(u1_name, "wrongpass")
     assert err is not None
     print("✔ 6. User login failed as expected with wrong password.")
 
     # 4. Test Session Verification
     session_user = database.verify_session(login_success["token"])
     assert session_user is not None
-    assert session_user["username"] == "alex_dev"
+    assert session_user["username"] == u1_name
     print("✔ 7. Session token verified successfully.")
 
     # 5. Test User Search
-    search_results = database.search_users("sara", user1["user_id"])
-    assert len(search_results) == 1
-    assert search_results[0]["username"] == "sara_ux"
-    print(f"✔ 8. Search query 'sara' returned: @{search_results[0]['username']}.")
+    search_results = database.search_users(u2_name[:4], user1["user_id"])
+    assert len(search_results) >= 1
+    assert any(u["username"] == u2_name for u in search_results)
+    print(f"✔ 8. Search query '{u2_name[:4]}' returned user @{u2_name}.")
 
     # 6. Test Profile Update
     updated_profile = database.update_profile(user1["user_id"], "Alex Master Dev", "new_avatar.png", "Building E2EE Apps 🚀")
