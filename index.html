@@ -1403,7 +1403,14 @@
           localStorage.setItem("yapergram_token", currentToken);
           onAuthSuccess();
         } else {
-          errorEl.innerText = data.error || "Authentication failed.";
+          if (!isRegisterMode && (data.error === "Invalid username or password" || (data.error && data.error.includes("Invalid")))) {
+            errorEl.innerHTML = `
+              <span>${escapeHtml(data.error)}.</span><br>
+              <span style="font-size:11px; color:#475569; font-weight:500;">Agar account nahi bana hai, to niche <b style="color:#2563eb; cursor:pointer; text-decoration:underline;" onclick="toggleAuthMode()">Create Account</b> par tap karke instant banayein!</span>
+            `;
+          } else {
+            errorEl.innerText = data.error || "Authentication failed.";
+          }
           errorEl.style.display = "block";
         }
       } catch (err) {
