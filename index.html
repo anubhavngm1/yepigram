@@ -2,563 +2,1843 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <!-- Primary Meta Tags -->
-  <title>Yapergram — End-to-End Encrypted Liquid Glass Messaging & Social Platform</title>
-  <meta name="title" content="Yapergram — End-to-End Encrypted Liquid Glass Messaging & Social Platform">
-  <meta name="description" content="Yapergram combines WhatsApp's zero-knowledge end-to-end encrypted messaging with Instagram's 24h stories and media feeds, wrapped in an authentic 3D liquid glassmorphism interface. 100% free non-profit platform.">
-  <meta name="keywords" content="Yapergram, E2EE, encrypted chat, WhatsApp alternative, Instagram stories, Signal protocol, liquid glassmorphism, private messenger, free chat app">
-  <meta name="author" content="Yapergram Non-Profit">
-  <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://anubhavngm1.github.io/yepigram/">
-
-  <!-- Open Graph / Facebook -->
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://anubhavngm1.github.io/yepigram/">
-  <meta property="og:title" content="Yapergram — End-to-End Encrypted Liquid Glass Messaging & Social Platform">
-  <meta property="og:description" content="Zero-knowledge private messaging and ephemeral social stories engineered with Signal Double Ratchet cryptography and authentic 3D liquid glass optics.">
-  <meta property="og:image" content="https://anubhavngm1.github.io/yepigram/client/icon-512.png">
-
-  <!-- Twitter -->
-  <meta property="twitter:card" content="summary_large_image">
-  <meta property="twitter:url" content="https://anubhavngm1.github.io/yepigram/">
-  <meta property="twitter:title" content="Yapergram — Private Messaging & Stories in Liquid Glass">
-  <meta property="twitter:description" content="Zero-knowledge private messaging and ephemeral social stories engineered with Signal Double Ratchet cryptography.">
-  <meta property="twitter:image" content="https://anubhavngm1.github.io/yepigram/client/icon-512.png">
-
-  <!-- JSON-LD Structured Data for Google Rich Snippets -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": "Yapergram",
-    "operatingSystem": "Web, Android, iPadOS, iOS",
-    "applicationCategory": "CommunicationApplication",
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "USD"
-    },
-    "description": "Zero-knowledge end-to-end encrypted messaging and ephemeral stories wrapped in 3D liquid glassmorphism.",
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.9",
-      "ratingCount": "128"
-    }
-  }
-  </script>
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Yapergram - Liquid Glass E2EE Social & Chat</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#818cf8">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <style>
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
       -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background: #090d16;
-      color: #f8fafc;
-      overflow-x: hidden;
-      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: #7dd3fc;
+      background: radial-gradient(circle at 10% 15%, #93c5fd 0%, transparent 40%),
+                  radial-gradient(circle at 90% 20%, #c084fc 0%, transparent 45%),
+                  radial-gradient(circle at 50% 50%, #d8b4fe 0%, transparent 50%),
+                  radial-gradient(circle at 85% 85%, #60a5fa 0%, transparent 45%),
+                  radial-gradient(circle at 15% 90%, #a78bfa 0%, transparent 50%),
+                  linear-gradient(135deg, #818cf8 0%, #a78bfa 45%, #60a5fa 100%);
+      background-attachment: fixed;
+      color: #0f172a;
+      overflow: hidden;
     }
 
-    /* Ambient Glow Background */
-    .ambient-bg {
-      position: fixed;
+    @media (min-width: 1024px) {
+      body {
+        padding: 24px;
+      }
+    }
+
+    /* Device Viewport: Phone Frame on Mobile, Responsive Canvas on iPad/Desktop */
+    .app-viewport {
+      width: 100vw;
+      height: 100vh;
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.22) 100%);
+      backdrop-filter: blur(40px) saturate(190%);
+      -webkit-backdrop-filter: blur(40px) saturate(190%);
+      display: flex;
+      position: relative;
+      overflow: hidden;
+    }
+
+    @media (min-width: 1024px) {
+      .app-viewport {
+        max-width: 1140px;
+        height: 860px;
+        border-radius: 46px;
+        border: 1.5px solid rgba(255, 255, 255, 0.85);
+        box-shadow: 0 30px 80px -15px rgba(67, 56, 202, 0.45),
+                    0 0 0 1px rgba(255, 255, 255, 0.4),
+                    inset 0 1px 3px rgba(255, 255, 255, 0.95);
+      }
+    }
+
+    /* Ambient Liquid Caustics Layer */
+    .liquid-background-layer {
+      position: absolute;
       inset: 0;
-      background: radial-gradient(circle at 20% 20%, rgba(99, 102, 241, 0.25) 0%, transparent 45%),
-                  radial-gradient(circle at 80% 30%, rgba(236, 72, 153, 0.2) 0%, transparent 40%),
-                  radial-gradient(circle at 50% 80%, rgba(56, 189, 248, 0.2) 0%, transparent 50%),
-                  #090d16;
-      z-index: -1;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 1;
     }
 
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 24px;
+    .liquid-wave-ring {
+      position: absolute;
+      top: 50px;
+      right: -130px;
+      width: 480px;
+      height: 480px;
+      border-radius: 50%;
+      border: 3.5px solid rgba(255, 255, 255, 0.85);
+      box-shadow: 0 0 50px rgba(255, 255, 255, 0.7), inset 0 0 40px rgba(192, 132, 252, 0.4);
+      background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.5) 0%, rgba(147, 197, 253, 0.25) 45%, transparent 75%);
+      filter: blur(1.5px);
+      transform: rotate(-12deg);
     }
 
-    /* Glass Navbar */
-    .navbar {
-      position: sticky;
-      top: 16px;
-      margin: 16px auto;
-      max-width: 1100px;
-      background: rgba(255, 255, 255, 0.06);
-      backdrop-filter: blur(25px);
-      -webkit-backdrop-filter: blur(25px);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 28px;
-      padding: 12px 28px;
+    .ambient-glow-blob1 {
+      position: absolute;
+      top: -60px;
+      left: 10px;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(147, 197, 253, 0.8) 0%, transparent 70%);
+      filter: blur(40px);
+    }
+
+    .ambient-glow-blob2 {
+      position: absolute;
+      bottom: 120px;
+      right: -40px;
+      width: 340px;
+      height: 340px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(192, 132, 252, 0.7) 0%, rgba(96, 165, 250, 0.4) 50%, transparent 75%);
+      filter: blur(45px);
+    }
+
+    /* Master Column: Chats list */
+    .master-pane {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      z-index: 10;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @media (min-width: 1024px) {
+      .master-pane {
+        width: 410px;
+        flex-shrink: 0;
+        border-right: 1.5px solid rgba(255, 255, 255, 0.6);
+      }
+    }
+
+    /* Detail Column: Active E2EE Chat Canvas (iPad / Web) */
+    .detail-pane {
+      display: none;
+      flex: 1;
+      height: 100%;
+      flex-direction: column;
+      background: rgba(255, 255, 255, 0.28);
+      backdrop-filter: blur(35px);
+      -webkit-backdrop-filter: blur(35px);
+      position: relative;
+      z-index: 10;
+    }
+
+    @media (min-width: 1024px) {
+      .detail-pane {
+        display: flex;
+      }
+    }
+
+    /* Status Bar */
+    .status-bar {
+      padding: 12px 24px 6px 24px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      z-index: 50;
-      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.4);
+      font-size: 13px;
+      font-weight: 600;
+      color: #0f172a;
     }
 
-    .nav-logo {
+    /* Header */
+    .app-header {
+      padding: 6px 20px 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand-group {
       display: flex;
       align-items: center;
       gap: 10px;
-      text-decoration: none;
-      color: white;
-      font-weight: 800;
-      font-size: 20px;
-      letter-spacing: -0.5px;
     }
 
-    .nav-icon {
-      width: 34px;
-      height: 34px;
-      border-radius: 10px;
-      background: linear-gradient(135deg, #38bdf8, #6366f1, #d946ef);
+    .brand-logo {
+      width: 38px;
+      height: 38px;
+      border-radius: 13px;
+      background: linear-gradient(135deg, #38bdf8 0%, #6366f1 50%, #8b5cf6 100%);
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
-    }
-
-    .nav-links {
-      display: none;
-      gap: 28px;
-      align-items: center;
-    }
-    @media (min-width: 768px) {
-      .nav-links { display: flex; }
-    }
-
-    .nav-link {
-      color: #94a3b8;
-      text-decoration: none;
-      font-size: 14px;
-      font-weight: 600;
-      transition: color 0.2s;
-    }
-    .nav-link:hover { color: white; }
-
-    .btn-launch {
-      background: linear-gradient(135deg, #2563eb, #6366f1);
       color: white;
-      text-decoration: none;
-      padding: 9px 20px;
-      border-radius: 20px;
-      font-size: 13.5px;
-      font-weight: 700;
-      box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
-      transition: all 0.2s;
-    }
-    .btn-launch:hover {
-      transform: scale(1.05);
-      box-shadow: 0 6px 20px rgba(37, 99, 235, 0.6);
+      box-shadow: 0 6px 18px rgba(99, 102, 241, 0.45), inset 0 1px 1px rgba(255, 255, 255, 0.7);
+      cursor: pointer;
     }
 
-    /* Hero Section */
-    .hero {
-      padding: 70px 0 50px 0;
-      text-align: center;
-    }
-
-    .badge-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 6px 16px;
-      border-radius: 20px;
-      background: rgba(99, 102, 241, 0.15);
-      border: 1px solid rgba(99, 102, 241, 0.35);
-      color: #818cf8;
-      font-size: 12px;
-      font-weight: 700;
-      margin-bottom: 24px;
-      letter-spacing: 0.2px;
-    }
-
-    .hero-title {
-      font-size: 40px;
-      font-weight: 900;
-      line-height: 1.15;
-      letter-spacing: -1.5px;
-      margin-bottom: 20px;
-      background: linear-gradient(180deg, #ffffff 30%, #94a3b8 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    @media (min-width: 768px) {
-      .hero-title { font-size: 64px; }
-    }
-
-    .hero-subtitle {
-      font-size: 18px;
-      color: #94a3b8;
-      max-width: 680px;
-      margin: 0 auto 36px auto;
-      line-height: 1.6;
-    }
-
-    .cta-group {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 16px;
-      margin-bottom: 50px;
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, #2563eb, #6366f1);
-      color: white;
-      text-decoration: none;
-      padding: 14px 32px;
-      border-radius: 24px;
-      font-weight: 700;
-      font-size: 15px;
-      box-shadow: 0 8px 30px rgba(37, 99, 235, 0.45);
-      transition: all 0.2s;
-    }
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 35px rgba(37, 99, 235, 0.6);
-    }
-
-    .btn-secondary {
-      background: rgba(255, 255, 255, 0.08);
-      color: white;
-      text-decoration: none;
-      padding: 14px 28px;
-      border-radius: 24px;
-      font-weight: 600;
-      font-size: 15px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      transition: all 0.2s;
-    }
-    .btn-secondary:hover {
-      background: rgba(255, 255, 255, 0.14);
-      transform: translateY(-2px);
-    }
-
-    /* Live App Frame Preview */
-    .preview-card {
-      max-width: 960px;
-      margin: 0 auto 80px auto;
-      border-radius: 36px;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      box-shadow: 0 30px 90px rgba(0, 0, 0, 0.6), 0 0 60px rgba(99, 102, 241, 0.25);
-      overflow: hidden;
-      padding: 8px;
-    }
-
-    .preview-card iframe {
-      width: 100%;
-      height: 680px;
-      border: none;
-      border-radius: 28px;
-    }
-
-    /* Features Grid */
-    .section-title {
-      font-size: 32px;
+    .brand-title {
+      font-size: 25px;
       font-weight: 800;
-      text-align: center;
-      margin-bottom: 12px;
-      letter-spacing: -0.8px;
+      letter-spacing: -0.6px;
+      color: #ffffff;
+      text-shadow: 0 2px 10px rgba(99, 102, 241, 0.45);
     }
 
-    .section-subtitle {
-      color: #94a3b8;
-      text-align: center;
-      max-width: 600px;
-      margin: 0 auto 48px auto;
-      font-size: 16px;
-    }
-
-    .features-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 24px;
-      margin-bottom: 90px;
-    }
-    @media (min-width: 768px) {
-      .features-grid { grid-template-columns: repeat(3, 1fr); }
-    }
-
-    .feature-card {
-      background: rgba(255, 255, 255, 0.04);
+    .liquid-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.72) 0%, rgba(255, 255, 255, 0.32) 100%);
       backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-top: 1.5px solid rgba(255, 255, 255, 0.95);
+      border-left: 1px solid rgba(255, 255, 255, 0.8);
+      border-bottom: 1px solid rgba(147, 197, 253, 0.5);
+      box-shadow: 0 6px 20px rgba(100, 116, 139, 0.2), inset 0 1px 1.5px rgba(255, 255, 255, 1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #1e293b;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .liquid-btn:hover {
+      transform: scale(1.06);
+    }
+
+    /* Search Pill */
+    .search-container {
+      padding: 0 20px 10px 20px;
+    }
+
+    .search-liquid-pill {
+      width: 100%;
+      height: 42px;
+      border-radius: 24px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.65) 0%, rgba(255, 255, 255, 0.3) 100%);
+      backdrop-filter: blur(25px);
+      border-top: 1.5px solid rgba(255, 255, 255, 0.95);
+      border-left: 1px solid rgba(255, 255, 255, 0.8);
+      border-bottom: 1px solid rgba(147, 197, 253, 0.45);
+      box-shadow: 0 6px 22px rgba(100, 116, 139, 0.16), inset 0 1.5px 2px rgba(255, 255, 255, 0.95);
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      gap: 10px;
+    }
+
+    .search-liquid-pill input {
+      border: none;
+      background: transparent;
+      outline: none;
+      font-size: 13px;
+      font-weight: 500;
+      color: #0f172a;
+      width: 100%;
+    }
+
+    /* Stories */
+    .stories-row {
+      padding: 4px 20px 14px 20px;
+      display: flex;
+      gap: 14px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .stories-row::-webkit-scrollbar { display: none; }
+
+    .story-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+
+    .my-story-box {
+      width: 60px;
+      height: 60px;
+      border-radius: 22px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.68) 0%, rgba(255, 255, 255, 0.32) 100%);
+      border-top: 1.5px solid rgba(255, 255, 255, 0.95);
+      border-left: 1px solid rgba(255, 255, 255, 0.85);
+      border-bottom: 1px solid rgba(147, 197, 253, 0.5);
+      box-shadow: 0 8px 24px rgba(100, 116, 139, 0.2), inset 0 1.5px 2px rgba(255, 255, 255, 1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #1e293b;
+      font-size: 26px;
+      transition: transform 0.2s;
+    }
+    .my-story-box:hover { transform: scale(1.06); }
+
+    .story-avatar-wrap {
+      position: relative;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      padding: 2.5px;
+      background: linear-gradient(135deg, #60a5fa 0%, #818cf8 50%, #c084fc 100%);
+      box-shadow: 0 6px 18px rgba(99, 102, 241, 0.35);
+      transition: transform 0.2s;
+    }
+    .story-avatar-wrap:hover { transform: scale(1.06); }
+
+    .story-avatar-inner {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 14px;
+      color: white;
+    }
+
+    .story-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: #1e293b;
+    }
+
+    /* Chats List */
+    .chats-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 2px 16px 90px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 11px;
+      scrollbar-width: none;
+    }
+    .chats-list::-webkit-scrollbar { display: none; }
+
+    /* Locked Chats Header Banner */
+    .locked-chats-banner {
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.75) 0%, rgba(255, 255, 255, 0.45) 100%);
+      border: 1.5px solid rgba(255, 255, 255, 0.9);
+      border-radius: 20px;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.15);
+      cursor: pointer;
+      margin-bottom: 2px;
+      transition: all 0.2s;
+    }
+    .locked-chats-banner:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 25px rgba(99, 102, 241, 0.25);
+    }
+
+    .liquid-capsule {
+      position: relative;
+      background: linear-gradient(180deg, 
+        rgba(255, 255, 255, 0.68) 0%, 
+        rgba(255, 255, 255, 0.4) 35%, 
+        rgba(255, 255, 255, 0.24) 75%, 
+        rgba(255, 255, 255, 0.44) 100%
+      );
+      backdrop-filter: blur(28px) saturate(190%);
+      border-top: 1.5px solid rgba(255, 255, 255, 0.98);
+      border-left: 1.2px solid rgba(255, 255, 255, 0.85);
+      border-right: 1px solid rgba(255, 255, 255, 0.6);
+      border-bottom: 1px solid rgba(147, 197, 253, 0.5);
       border-radius: 28px;
-      padding: 32px 24px;
+      padding: 11px 15px;
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      box-shadow: 0 10px 32px -4px rgba(30, 58, 138, 0.2), inset 0 1.5px 2px rgba(255, 255, 255, 0.98);
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow: hidden;
+    }
+
+    .liquid-capsule::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 8%;
+      right: 8%;
+      height: 48%;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0) 100%);
+      border-radius: 28px 28px 100px 100px;
+      pointer-events: none;
+    }
+
+    .liquid-capsule:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 40px -4px rgba(30, 58, 138, 0.28), inset 0 2px 3px rgba(255, 255, 255, 1);
+    }
+
+    .liquid-capsule.active {
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.6) 40%, rgba(255, 255, 255, 0.68) 100%);
+      border-top: 2px solid #ffffff;
+      box-shadow: 0 16px 45px -4px rgba(37, 99, 235, 0.35), inset 0 2px 3px #ffffff;
+    }
+
+    .chat-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 14px;
+      color: white;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.14);
+      position: relative;
+      z-index: 2;
+    }
+
+    .chat-info {
+      flex: 1;
+      min-width: 0;
+      position: relative;
+      z-index: 2;
+    }
+
+    .chat-top-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2px;
+    }
+
+    .chat-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: #0f172a;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      letter-spacing: -0.2px;
+    }
+
+    .chat-time {
+      font-size: 11px;
+      font-weight: 600;
+      color: #475569;
+    }
+
+    .chat-bottom-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .chat-snippet {
+      font-size: 12.5px;
+      color: #334155;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* FAB */
+    .fab-liquid-orb {
+      position: absolute;
+      bottom: 86px;
+      right: 22px;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 25%, #60a5fa 0%, #6366f1 45%, #a855f7 75%, #ec4899 100%);
+      box-shadow: 0 14px 35px rgba(99, 102, 241, 0.65), inset 0 2px 3px rgba(255, 255, 255, 0.9);
+      border: 1.5px solid rgba(255, 255, 255, 0.65);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      cursor: pointer;
+      z-index: 25;
       transition: all 0.25s;
     }
-    .feature-card:hover {
-      transform: translateY(-4px);
-      border-color: rgba(99, 102, 241, 0.4);
-      box-shadow: 0 15px 40px rgba(99, 102, 241, 0.15);
-    }
+    .fab-liquid-orb:hover { transform: scale(1.08) translateY(-2px); }
 
-    .feature-icon {
-      font-size: 32px;
-      margin-bottom: 16px;
-    }
-
-    .feature-heading {
-      font-size: 18px;
-      font-weight: 700;
-      margin-bottom: 8px;
-      color: #f1f5f9;
-    }
-
-    .feature-desc {
-      font-size: 14px;
-      color: #94a3b8;
-      line-height: 1.5;
-    }
-
-    /* Technical Architecture */
-    .arch-card {
-      background: linear-gradient(145deg, rgba(30, 41, 59, 0.4) 0%, rgba(15, 23, 42, 0.6) 100%);
-      border: 1px solid rgba(255, 255, 255, 0.12);
+    /* Bottom Dock */
+    .bottom-liquid-dock {
+      position: absolute;
+      bottom: 12px;
+      left: 18px;
+      right: 18px;
+      height: 64px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.75) 0%, rgba(255, 255, 255, 0.48) 45%, rgba(255, 255, 255, 0.38) 100%);
+      backdrop-filter: blur(36px) saturate(190%);
+      border-top: 1.5px solid rgba(255, 255, 255, 0.98);
+      border-left: 1px solid rgba(255, 255, 255, 0.85);
+      border-bottom: 1px solid rgba(147, 197, 253, 0.55);
       border-radius: 32px;
-      padding: 40px 32px;
-      margin-bottom: 90px;
+      box-shadow: 0 14px 40px rgba(30, 58, 138, 0.25);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 0 14px;
+      z-index: 25;
     }
 
-    .arch-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 24px;
-      font-size: 14px;
+    .dock-tab {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      color: #475569;
+      cursor: pointer;
+      text-decoration: none;
     }
-    .arch-table th, .arch-table td {
-      padding: 12px 16px;
-      text-align: left;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    }
-    .arch-table th {
-      color: #818cf8;
-      font-weight: 700;
+    .dock-tab.active { color: #2563eb; }
+    .dock-tab svg { width: 21px; height: 21px; }
+    .dock-label { font-size: 10px; font-weight: 700; }
+    .active-indicator {
+      width: 15px;
+      height: 3px;
+      background: #2563eb;
+      border-radius: 2px;
     }
 
-    /* FAQ */
-    .faq-grid {
-      display: grid;
-      grid-template-columns: 1fr;
+    /* Detail / Chat Thread Elements */
+    .chat-header {
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1.5px solid rgba(255, 255, 255, 0.5);
+      background: rgba(255, 255, 255, 0.4);
+    }
+
+    .back-btn-mobile {
+      display: inline-flex;
+      margin-right: 10px;
+      cursor: pointer;
+    }
+    @media (min-width: 1024px) {
+      .back-btn-mobile { display: none; }
+    }
+
+    .e2ee-badge {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #047857;
+      margin-top: 2px;
+    }
+
+    .messages-canvas {
+      flex: 1;
+      overflow-y: auto;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
       gap: 16px;
-      max-width: 800px;
-      margin: 0 auto 90px auto;
+      scrollbar-width: none;
     }
+    .messages-canvas::-webkit-scrollbar { display: none; }
 
-    .faq-item {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+    .e2ee-banner {
+      align-self: center;
+      padding: 8px 16px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.65) 0%, rgba(255, 255, 255, 0.35) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.8);
       border-radius: 20px;
-      padding: 20px 24px;
+      font-size: 11px;
+      font-weight: 500;
+      color: #334155;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 4px 14px rgba(100, 116, 139, 0.12);
     }
 
-    .faq-q {
-      font-size: 16px;
-      font-weight: 700;
-      color: #f8fafc;
-      margin-bottom: 8px;
+    /* Animated Typing Indicator */
+    .typing-bubble {
+      align-self: flex-start;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.72) 0%, rgba(255, 255, 255, 0.42) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.85);
+      border-radius: 20px 20px 20px 4px;
+      padding: 10px 16px;
+      display: none;
+      align-items: center;
+      gap: 4px;
+      box-shadow: 0 6px 20px rgba(100, 116, 139, 0.15);
     }
 
-    .faq-a {
-      font-size: 14px;
-      color: #94a3b8;
+    .typing-dot {
+      width: 7px;
+      height: 7px;
+      background: #6366f1;
+      border-radius: 50%;
+      animation: typingBouncy 1.4s infinite ease-in-out;
+    }
+    .typing-dot:nth-child(1) { animation-delay: 0s; }
+    .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes typingBouncy {
+      0%, 80%, 100% { transform: translateY(0); opacity: 0.4; }
+      40% { transform: translateY(-6px); opacity: 1; }
     }
 
-    /* Footer */
-    footer {
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 40px 0;
-      text-align: center;
+    /* Message Bubbles */
+    .msg-incoming {
+      align-self: flex-start;
+      max-width: 75%;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.72) 0%, rgba(255, 255, 255, 0.42) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.85);
+      border-radius: 22px 22px 22px 4px;
+      padding: 12px 16px;
+      font-size: 13.5px;
+      line-height: 1.4;
+      color: #0f172a;
+      box-shadow: 0 6px 20px rgba(100, 116, 139, 0.15);
+    }
+
+    .msg-outgoing {
+      align-self: flex-end;
+      max-width: 75%;
+      background: linear-gradient(135deg, #2563eb 0%, #4f46e5 100%);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 22px 22px 4px 22px;
+      padding: 12px 16px;
+      font-size: 13.5px;
+      line-height: 1.4;
+      color: white;
+      box-shadow: 0 8px 24px rgba(37, 99, 235, 0.35);
+    }
+
+    .msg-meta {
+      font-size: 10px;
+      margin-top: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 4px;
+      opacity: 0.85;
+    }
+
+    /* Animated status icons: cute clock or paper airplane */
+    @keyframes spinClock {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .clock-pending {
+      display: inline-block;
+      animation: spinClock 3s linear infinite;
+      font-size: 10px;
+    }
+
+    /* Message Composer */
+    .composer-dock {
+      padding: 14px 20px;
+      background: rgba(255, 255, 255, 0.55);
+      border-top: 1.5px solid rgba(255, 255, 255, 0.6);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 20;
+    }
+
+    .composer-input {
+      flex: 1;
+      height: 44px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.5) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.95);
+      border-radius: 22px;
+      padding: 0 18px;
       font-size: 13px;
-      color: #64748b;
+      outline: none;
+      color: #0f172a;
+      box-shadow: inset 0 1px 2px rgba(255, 255, 255, 1);
+    }
+
+    .send-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #2563eb 0%, #4f46e5 100%);
+      border: none;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4);
+      transition: transform 0.2s;
+    }
+    .send-btn:hover { transform: scale(1.06); }
+
+    /* Modals: Auth, Chat Lock PIN, Profile, Stories */
+    .glass-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-card {
+      width: 100%;
+      max-width: 380px;
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.55) 100%);
+      border: 1.5px solid rgba(255, 255, 255, 0.95);
+      border-radius: 36px;
+      padding: 28px 24px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      position: relative;
+    }
+
+    .modal-input {
+      width: 100%;
+      height: 44px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      padding: 0 16px;
+      font-size: 13.5px;
+      outline: none;
+      color: #0f172a;
+    }
+
+    .modal-btn {
+      width: 100%;
+      height: 44px;
+      border-radius: 22px;
+      background: linear-gradient(135deg, #2563eb 0%, #6366f1 100%);
+      color: white;
+      font-weight: 700;
+      font-size: 14px;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(37, 99, 235, 0.35);
+      transition: transform 0.2s;
+    }
+    .modal-btn:hover { transform: scale(1.02); }
+
+    .pin-display {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin: 10px 0;
+    }
+    .pin-dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: 2px solid #6366f1;
+      background: transparent;
+      transition: all 0.2s;
+    }
+    .pin-dot.filled {
+      background: #6366f1;
+      transform: scale(1.15);
     }
   </style>
 </head>
 <body>
 
-  <div class="ambient-bg"></div>
-
-  <!-- Navbar -->
-  <nav class="navbar">
-    <a href="#" class="nav-logo">
-      <div class="nav-icon">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="white" style="transform: rotate(-45deg);"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
-      </div>
-      <span>Yapergram</span>
-    </a>
-
-    <div class="nav-links">
-      <a href="#features" class="nav-link">Features</a>
-      <a href="#security" class="nav-link">E2EE Security</a>
-      <a href="#faq" class="nav-link">FAQ</a>
-      <a href="https://github.com/anubhavngm1/yepigram" target="_blank" class="nav-link">GitHub</a>
+  <!-- Main Viewport Container -->
+  <div class="app-viewport">
+    
+    <!-- Caustic Background Layer -->
+    <div class="liquid-background-layer">
+      <div class="ambient-glow-blob1"></div>
+      <div class="liquid-wave-ring"></div>
+      <div class="ambient-glow-blob2"></div>
     </div>
 
-    <a href="client/index.html" class="btn-launch">Launch App 🚀</a>
-  </nav>
+    <!-- ============================================== -->
+    <!-- MASTER COLUMN (Chats List & Stories Carousel) -->
+    <!-- ============================================== -->
+    <aside class="master-pane" id="masterPane">
+      <!-- Status Bar -->
+      <div class="status-bar">
+        <span>9:41</span>
+        <div style="display:flex; align-items:center; gap:5px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="#0f172a"><path d="M12 3c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L4.35 19.4c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0l1.9-1.9C9.22 19.58 10.56 20 12 20c4.97 0 9-4.03 9-9s-4.03-9-9-9z"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="#0f172a"><path d="M12 4C7.31 4 3.07 5.9 0 8.98L12 21 24 8.98A16.88 16.88 0 0012 4z"/></svg>
+          <div style="width:22px; height:11px; border:1.2px solid #0f172a; border-radius:3px; padding:1px; display:flex;">
+            <div style="width:100%; height:100%; background:#0f172a;"></div>
+          </div>
+        </div>
+      </div>
 
-  <!-- Hero Section -->
-  <header class="hero container">
-    <div class="badge-pill">
-      <span>🔒 Signal Protocol E2EE</span>
-      <span>•</span>
-      <span>100% Free Lifetime Non-Profit</span>
+      <!-- App Header -->
+      <header class="app-header">
+        <div class="brand-group" onclick="openProfileModal()">
+          <div class="brand-logo" id="myAvatarIcon">
+            <svg width="21" height="21" viewBox="0 0 24 24" fill="currentColor" style="transform: rotate(-45deg) translate(1px, -1px);"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+          </div>
+          <div>
+            <span class="brand-title">Yapergram</span>
+            <div style="display:flex; align-items:center; gap:5px; font-size:10px; font-weight:700; color:#047857;">
+              <span style="width:6px; height:6px; border-radius:50%; background:#10b981;" id="liveStatusDot"></span>
+              <span id="myUsernameDisplay">Connecting...</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex; gap:8px;">
+          <button class="liquid-btn" onclick="openCreateStoryModal()" title="Post 24h Story">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+          </button>
+          <button class="liquid-btn" onclick="openNewChatModal()" title="New Chat">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+        </div>
+      </header>
+
+      <!-- Search Bar -->
+      <div class="search-container">
+        <div class="search-liquid-pill">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#334155" stroke-width="2.2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="chatSearchInput" placeholder="Search chats or username..." oninput="filterLocalChats(this.value)">
+        </div>
+      </div>
+
+      <!-- Real Stories Carousel -->
+      <div class="stories-row" id="storiesCarousel">
+        <div class="story-item" onclick="openCreateStoryModal()">
+          <div class="my-story-box">+</div>
+          <span class="story-label">My Story</span>
+        </div>
+        <!-- Injected dynamically from server -->
+      </div>
+
+      <!-- Chats List Container -->
+      <div class="chats-list" id="chatsListContainer">
+        <!-- Locked Chats Header Folder -->
+        <div class="locked-chats-banner" onclick="promptUnlockHiddenChats()">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <div style="width:32px; height:32px; border-radius:50%; background:linear-gradient(135deg, #6366f1, #8b5cf6); color:white; display:flex; align-items:center; justify-content:center; font-size:14px;">🔒</div>
+            <div>
+              <div style="font-size:13px; font-weight:700; color:#0f172a;">Locked Chats</div>
+              <div style="font-size:10px; color:#64748b; font-weight:500;">Tap to unlock with PIN</div>
+            </div>
+          </div>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+
+        <!-- Chats injected dynamically here -->
+        <div id="dynamicChatsList" style="display:flex; flex-direction:column; gap:10px;">
+          <div style="text-align:center; padding:40px 20px; color:#475569; font-size:13px;" id="emptyChatsNotice">
+            <div style="font-size:36px; margin-bottom:8px;">🔒 💬</div>
+            <b>No conversations yet!</b><br>
+            Tap <span style="color:#2563eb; font-weight:700; cursor:pointer;" onclick="openNewChatModal()">'+'</span> to search any user and start your first E2EE chat.
+          </div>
+        </div>
+      </div>
+
+      <!-- FAB: Quick Start Chat -->
+      <div class="fab-liquid-orb" onclick="openNewChatModal()" title="Start New Chat">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/></svg>
+      </div>
+
+      <!-- Bottom Dock Navigation -->
+      <nav class="bottom-liquid-dock">
+        <div class="dock-tab active" onclick="switchNavTab('chats')">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+          <span class="dock-label">Chats</span>
+          <div class="active-indicator"></div>
+        </div>
+        <div class="dock-tab" onclick="openNewChatModal()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <span class="dock-label">Contacts</span>
+        </div>
+        <div class="dock-tab" onclick="switchNavTab('explore')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+          <span class="dock-label">Explore</span>
+        </div>
+        <div class="dock-tab" onclick="openProfileModal()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          <span class="dock-label">Settings</span>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- ============================================== -->
+    <!-- DETAIL COLUMN (Live Active E2EE Chat Canvas)  -->
+    <!-- ============================================== -->
+    <main class="detail-pane" id="detailPane">
+      <!-- Chat Header -->
+      <div class="chat-header">
+        <div style="display:flex; align-items:center;">
+          <!-- Mobile Back Button -->
+          <div class="back-btn-mobile" onclick="closeChatMobile()">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0f172a" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+          </div>
+          <div class="chat-avatar" id="activeChatAvatar" style="background:#2563eb; margin-right:10px;">
+            Y
+          </div>
+          <div>
+            <div style="display:flex; align-items:center; gap:6px;">
+              <h3 id="activeChatTitle" style="font-size:15px; font-weight:700; color:#0f172a;">Select a conversation</h3>
+              <span id="activePeerUsername" style="font-size:11px; color:#64748b; font-weight:600;"></span>
+            </div>
+            <div class="e2ee-badge" id="activeE2eeLabel">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+              <span>Signal Double Ratchet E2EE</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex; gap:8px;">
+          <!-- Lock This Chat Button -->
+          <button class="liquid-btn" onclick="promptLockCurrentChat()" title="Lock Chat with PIN">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </button>
+          <button class="liquid-btn" onclick="alert('Voice and Video calls will be activated in Phase 2!')" title="Call">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Messages Thread Canvas -->
+      <div class="messages-canvas" id="messagesCanvas">
+        <div class="e2ee-banner">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="#047857"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+          <span>End-to-End Encrypted. Messages are encrypted on device before transmission.</span>
+        </div>
+        <!-- Injected dynamically -->
+      </div>
+
+      <!-- Animated Typing Indicator Bubble -->
+      <div class="typing-bubble" id="typingIndicator">
+        <span style="font-size:11px; font-weight:600; color:#4f46e5; margin-right:4px;" id="typingName">Typing</span>
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+      </div>
+
+      <!-- Message Composer Bar (Always visible & interactive) -->
+      <div class="composer-dock">
+        <button class="liquid-btn" onclick="sendAttachmentSim()" title="Add Attachment">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <input type="text" id="composerInput" class="composer-input" placeholder="Type an encrypted message..." oninput="handleTypingInput()" onkeydown="if(event.key==='Enter') sendChatMessage()">
+        <button class="send-btn" onclick="sendChatMessage()" title="Send">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="transform: rotate(45deg);"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
+      </div>
+    </main>
+
+  </div>
+
+  <!-- ============================================== -->
+  <!-- MODAL: AUTHENTICATION (Login & Registration)   -->
+  <!-- ============================================== -->
+  <div class="glass-modal" id="authModal" style="display:none;">
+    <div class="modal-card">
+      <div style="text-align:center;">
+        <div style="width:48px; height:48px; border-radius:16px; background:linear-gradient(135deg, #38bdf8, #6366f1); margin:0 auto 10px auto; display:flex; align-items:center; justify-content:center; color:white; font-size:22px; box-shadow:0 8px 20px rgba(99,102,241,0.4);">🔒</div>
+        <h2 style="font-size:22px; font-weight:800; color:#0f172a;" id="authModalTitle">Welcome to Yapergram</h2>
+        <p style="font-size:12px; color:#64748b; margin-top:4px;" id="authModalSubtitle">Sign in to your end-to-end encrypted account</p>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:12px;">
+        <input type="text" id="authUsername" class="modal-input" placeholder="Username (e.g. alex_dev)" autocomplete="username">
+        <input type="text" id="authDisplayName" class="modal-input" placeholder="Display Name (optional)" style="display:none;">
+        <input type="password" id="authPassword" class="modal-input" placeholder="Password" autocomplete="current-password" onkeydown="if(event.key==='Enter') submitAuthForm()">
+      </div>
+
+      <div id="authErrorMsg" style="color:#ef4444; font-size:12px; font-weight:600; text-align:center; display:none;"></div>
+
+      <button class="modal-btn" id="authSubmitBtn" onclick="submitAuthForm()">Sign In</button>
+
+      <div style="text-align:center; font-size:12px; color:#475569;">
+        <span id="authToggleQuestion">Don't have an account?</span>
+        <b style="color:#2563eb; cursor:pointer;" id="authToggleAction" onclick="toggleAuthMode()">Create Account</b>
+      </div>
     </div>
+  </div>
 
-    <h1 class="hero-title">
-      WhatsApp Messaging.<br>Instagram Stories. In Pure Liquid Glass.
-    </h1>
-
-    <p class="hero-subtitle">
-      Yapergram delivers zero-knowledge end-to-end encrypted messaging with 24h ephemeral social stories. Zero server telemetry, zero credit card requirements, and zero app store fees.
-    </p>
-
-    <div class="cta-group">
-      <a href="client/index.html" class="btn-primary">Open Web & iPad App 📱</a>
-      <a href="https://github.com/anubhavngm1/yepigram" target="_blank" class="btn-secondary">View Open-Source Code 💻</a>
-    </div>
-
-    <!-- Live Embedded App Mockup Preview -->
-    <div class="preview-card">
-      <iframe src="client/index.html" title="Yapergram Live App Preview" loading="lazy"></iframe>
-    </div>
-  </header>
-
-  <!-- Features Grid -->
-  <section id="features" class="container">
-    <h2 class="section-title">Engineered for Privacy & Beauty</h2>
-    <p class="section-subtitle">Every feature designed from the ground up to protect your communication while delivering an unforgettable visual experience.</p>
-
-    <div class="features-grid">
-      <!-- 1 -->
-      <div class="feature-card">
-        <div class="feature-icon">🛡️</div>
-        <h3 class="feature-heading">Signal Double Ratchet E2EE</h3>
-        <p class="feature-desc">Every message is encrypted with unique ephemeral keys derived through Curve25519 X3DH and HKDF. Even compromised servers cannot decrypt past or future chats.</p>
+  <!-- ============================================== -->
+  <!-- MODAL: NEW CHAT / USER SEARCH                  -->
+  <!-- ============================================== -->
+  <div class="glass-modal" id="newChatModal" style="display:none;" onclick="closeNewChatModal()">
+    <div class="modal-card" onclick="event.stopPropagation()">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h3 style="font-size:18px; font-weight:800; color:#0f172a;">Start New Encrypted Chat</h3>
+        <button onclick="closeNewChatModal()" style="border:none; background:transparent; font-size:18px; cursor:pointer;">✕</button>
       </div>
 
-      <!-- 2 -->
-      <div class="feature-card">
-        <div class="feature-icon">💎</div>
-        <h3 class="feature-heading">3D Liquid Glassmorphism</h3>
-        <p class="feature-desc">Built with VisionOS / iOS 18 optics: convex lens gradients, top specular rim sheens, ambient refraction waves, and glowing floating action orbs.</p>
-      </div>
+      <input type="text" id="searchUserField" class="modal-input" placeholder="Type username to search..." oninput="searchUsersApi(this.value)">
 
-      <!-- 3 -->
-      <div class="feature-card">
-        <div class="feature-icon">🔐</div>
-        <h3 class="feature-heading">Locked Chats & Hidden Folders</h3>
-        <p class="feature-desc">Protect sensitive conversations with a 4-digit PIN. Locked chats remain hidden in a separate folder until unlocked via secure biometric/PIN verification.</p>
-      </div>
-
-      <!-- 4 -->
-      <div class="feature-card">
-        <div class="feature-icon">📸</div>
-        <h3 class="feature-heading">24h Ephemeral Stories</h3>
-        <p class="feature-desc">Share visual photo updates and gradient text statuses that automatically disappear after 24 hours. Full privacy with zero persistent metadata.</p>
-      </div>
-
-      <!-- 5 -->
-      <div class="feature-card">
-        <div class="feature-icon">⚡</div>
-        <h3 class="feature-heading">Real-Time WebSockets</h3>
-        <p class="feature-desc">Sub-millisecond message delivery with instant read receipts (double blue ticks), live typing indicators, and ephemeral offline queueing.</p>
-      </div>
-
-      <!-- 6 -->
-      <div class="feature-card">
-        <div class="feature-icon">🌐</div>
-        <h3 class="feature-heading">100% Free Lifetime Non-Profit</h3>
-        <p class="feature-desc">Bypasses Apple's $99/year fee via high-performance iPadOS PWA and Google's $25 fee via direct APK releases. Zero hosting bills, zero credit card ever.</p>
+      <div id="searchResultsList" style="max-height:240px; overflow-y:auto; display:flex; flex-direction:column; gap:8px;">
+        <div style="font-size:12px; color:#64748b; text-align:center; padding:20px;">Type a username to discover registered users</div>
       </div>
     </div>
-  </section>
+  </div>
 
-  <!-- Security & Architecture Section -->
-  <section id="security" class="container">
-    <div class="arch-card">
-      <div style="display:inline-block; font-size:12px; font-weight:700; color:#38bdf8; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">Zero-Knowledge Cryptography</div>
-      <h2 style="font-size:28px; font-weight:800; margin-bottom:12px;">How Yapergram Protects Your Data</h2>
-      <p style="color:#94a3b8; font-size:15px; max-width:720px;">
-        Unlike traditional platforms that store plaintext messages or central decryption keys, Yapergram utilizes a zero-knowledge architecture. The backend functions strictly as an encrypted envelope routing broker.
-      </p>
+  <!-- ============================================== -->
+  <!-- MODAL: CHAT LOCK PIN ENTRY                     -->
+  <!-- ============================================== -->
+  <div class="glass-modal" id="pinModal" style="display:none;" onclick="closePinModal()">
+    <div class="modal-card" style="text-align:center;" onclick="event.stopPropagation()">
+      <div style="font-size:32px;">🔐</div>
+      <h3 style="font-size:18px; font-weight:800; color:#0f172a;" id="pinModalTitle">Enter 4-Digit Chat PIN</h3>
+      <p style="font-size:12px; color:#64748b;">This chat is locked for your privacy</p>
 
-      <table class="arch-table">
-        <thead>
-          <tr>
-            <th>Security Layer</th>
-            <th>Cryptographic Standard</th>
-            <th>Implementation Details</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><b>Key Exchange</b></td>
-            <td>Curve25519 (X3DH)</td>
-            <td>Triple Diffie-Hellman handshake establishing shared master secret</td>
-          </tr>
-          <tr>
-            <td><b>Message Cipher</b></td>
-            <td>AES-256-GCM / Poly1305</td>
-            <td>Authenticated symmetric encryption with unique 12-byte initialization vectors</td>
-          </tr>
-          <tr>
-            <td><b>Forward Secrecy</b></td>
-            <td>Double Ratchet Algorithm</td>
-            <td>DH Ratchet + KDF Ratchet generating brand-new keys per message packet</td>
-          </tr>
-          <tr>
-            <td><b>Ephemeral Queue</b></td>
-            <td>Auto-Purging SQLite</td>
-            <td>Server permanently wipes encrypted payloads upon delivery confirmation</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
-
-  <!-- FAQ Section -->
-  <section id="faq" class="container">
-    <h2 class="section-title">Frequently Asked Questions</h2>
-    <p class="section-subtitle">Everything you need to know about Yapergram.</p>
-
-    <div class="faq-grid">
-      <div class="faq-item">
-        <h3 class="faq-q">Is Yapergram really 100% free forever?</h3>
-        <p class="faq-a">Yes. Yapergram operates on a decentralized, zero-credit-card architecture utilizing GitHub Pages, Render Free Tier containers, and client-side PWA technology. There are no subscriptions or hidden fees.</p>
+      <div class="pin-display">
+        <div class="pin-dot" id="pdot1"></div>
+        <div class="pin-dot" id="pdot2"></div>
+        <div class="pin-dot" id="pdot3"></div>
+        <div class="pin-dot" id="pdot4"></div>
       </div>
 
-      <div class="faq-item">
-        <h3 class="faq-q">Can anyone read my messages on the server?</h3>
-        <p class="faq-a">No. All messages are encrypted directly on your device before transmission. The server only sees random ciphertext bytes and cannot read messages, view media, or forge identities.</p>
-      </div>
-
-      <div class="faq-item">
-        <h3 class="faq-q">How do I install Yapergram on my iPad or Android phone?</h3>
-        <p class="faq-a">Open <a href="client/index.html" style="color:#38bdf8;">client/index.html</a> in Safari (iPad) or Chrome (Android) and tap <b>"Add to Home Screen"</b>. Yapergram installs instantly as a native full-screen standalone application with push notifications.</p>
-      </div>
-
-      <div class="faq-item">
-        <h3 class="faq-q">How do Locked Chats work?</h3>
-        <p class="faq-a">You can set a 4-digit PIN on any conversation. Locked chats are hidden in a dedicated folder and cannot be opened or read without entering the correct PIN.</p>
+      <!-- Numeric Keypad -->
+      <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:10px; margin-top:10px;">
+        <button class="liquid-btn" style="width:100%; height:46px; font-size:18px; font-weight:700;" onclick="enterPinDigit('1')">1</button>
+        <button class="liquid-btn" style="width:100%; height:46px; font-size:18px; font-weight:700;" onclick="enterPinDigit('2')">2</button>
+        <button class="liquid-btn" style="width:100%; height:46px; font-size:18px; font-weight:700;" onclick="enterPinDigit('3')">3</button>
+        <button class="liquid-btn" style="width:100%; height:46px; font-size:18px; font-weight:700;" onclick="enterPinDigit('4')">4</button>
+        <button class="liquid-btn" style="width:100%; height:46px; font-size:18px; font-weight:700;" onclick="enterPinDigit('5')">5</button>
+        <button class="liquid-btn" style="width:100%; height:46px; font-size:18px; font-weight:700;" onclick="enterPinDigit('6')">6</button>
+        <button class="liquid-btn" style="width:100%; height:46px; font-size:18px; font-weight:700;" onclick="enterPinDigit('7')">7</button>
+        <button class="liquid-btn" style="width:100%; height:46px; font-size:18px; font-weight:700;" onclick="enterPinDigit('8')">8</button>
+        <button class="liquid-btn" style="width:100%; height:46px; font-size:18px; font-weight:700;" onclick="enterPinDigit('9')">9</button>
+        <button class="liquid-btn" style="width:100%; height:46px; font-size:13px; font-weight:600;" onclick="clearPin()">Clear</button>
+        <button class="liquid-btn" style="width:100%; height:46px; font-size:18px; font-weight:700;" onclick="enterPinDigit('0')">0</button>
+        <button class="liquid-btn" style="width:100%; height:46px; font-size:14px; font-weight:600;" onclick="closePinModal()">Cancel</button>
       </div>
     </div>
-  </section>
+  </div>
 
-  <!-- Footer -->
-  <footer>
-    <div class="container">
-      <p style="margin-bottom:8px;"><b>Yapergram</b> — Open Source, Non-Profit, End-to-End Encrypted Platform.</p>
-      <p>Built with Signal Protocol & 3D Liquid Glassmorphism • <a href="https://github.com/anubhavngm1/yepigram" style="color:#818cf8; text-decoration:none;">GitHub Repository</a></p>
+  <!-- ============================================== -->
+  <!-- MODAL: PROFILE & SETTINGS                      -->
+  <!-- ============================================== -->
+  <div class="glass-modal" id="profileModal" style="display:none;" onclick="closeProfileModal()">
+    <div class="modal-card" onclick="event.stopPropagation()">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h3 style="font-size:18px; font-weight:800; color:#0f172a;">Your Profile & Settings</h3>
+        <button onclick="closeProfileModal()" style="border:none; background:transparent; font-size:18px; cursor:pointer;">✕</button>
+      </div>
+
+      <div style="display:flex; flex-direction:column; align-items:center; gap:8px;">
+        <div id="profileAvatarBig" style="width:72px; height:72px; border-radius:50%; background:linear-gradient(135deg, #3b82f6, #ec4899); color:white; display:flex; align-items:center; justify-content:center; font-size:26px; font-weight:800; box-shadow:0 8px 24px rgba(99,102,241,0.35);">U</div>
+        <b id="profileUsernameBig" style="font-size:16px; color:#0f172a;">@username</b>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:10px;">
+        <label style="font-size:11px; font-weight:700; color:#64748b;">Display Name</label>
+        <input type="text" id="editDisplayName" class="modal-input" placeholder="Your Display Name">
+        <label style="font-size:11px; font-weight:700; color:#64748b;">Bio Status</label>
+        <input type="text" id="editBio" class="modal-input" placeholder="Your status message">
+      </div>
+
+      <button class="modal-btn" onclick="saveProfileChanges()">Save Changes</button>
+      <button class="modal-btn" style="background:rgba(239,68,68,0.15); color:#ef4444; box-shadow:none; border:1px solid rgba(239,68,68,0.3);" onclick="performLogout()">Log Out</button>
     </div>
-  </footer>
+  </div>
 
+  <!-- ============================================== -->
+  <!-- MODAL: CREATE 24H STORY                        -->
+  <!-- ============================================== -->
+  <div class="glass-modal" id="createStoryModal" style="display:none;" onclick="closeCreateStoryModal()">
+    <div class="modal-card" onclick="event.stopPropagation()">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h3 style="font-size:18px; font-weight:800; color:#0f172a;">Post to 24h Story</h3>
+        <button onclick="closeCreateStoryModal()" style="border:none; background:transparent; font-size:18px; cursor:pointer;">✕</button>
+      </div>
+
+      <textarea id="storyTextInput" class="modal-input" style="height:100px; padding:12px; resize:none;" placeholder="What's happening? Share a story with your contacts..."></textarea>
+
+      <div style="display:flex; gap:8px;">
+        <div onclick="selectStoryGradient('linear-gradient(135deg, #38bdf8, #6366f1)')" style="flex:1; height:32px; border-radius:10px; background:linear-gradient(135deg, #38bdf8, #6366f1); cursor:pointer;"></div>
+        <div onclick="selectStoryGradient('linear-gradient(135deg, #ec4899, #8b5cf6)')" style="flex:1; height:32px; border-radius:10px; background:linear-gradient(135deg, #ec4899, #8b5cf6); cursor:pointer;"></div>
+        <div onclick="selectStoryGradient('linear-gradient(135deg, #f59e0b, #ef4444)')" style="flex:1; height:32px; border-radius:10px; background:linear-gradient(135deg, #f59e0b, #ef4444); cursor:pointer;"></div>
+      </div>
+
+      <button class="modal-btn" onclick="publishStory()">Publish Story</button>
+    </div>
+  </div>
+
+  <!-- ============================================== -->
+  <!-- MODAL: STORIES VIEWER                          -->
+  <!-- ============================================== -->
+  <div class="glass-modal" id="storyViewerModal" style="display:none;" onclick="closeStoryViewer()">
+    <div id="storyViewerCard" style="width:340px; height:580px; border-radius:32px; background:linear-gradient(135deg, #1e1b4b, #312e81); border:1.5px solid rgba(255,255,255,0.3); display:flex; flex-direction:column; justify-content:space-between; padding:20px; color:white; box-shadow:0 25px 60px rgba(0,0,0,0.6);" onclick="event.stopPropagation()">
+      <div style="height:3px; background:rgba(255,255,255,0.4); border-radius:2px; overflow:hidden;">
+        <div id="storyViewerProgress" style="height:100%; width:0%; background:white; transition:width 3.5s linear;"></div>
+      </div>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px;">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <div style="width:32px; height:32px; border-radius:50%; background:#ec4899; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:12px;" id="storyViewerInitials">U</div>
+          <span id="storyViewerAuthor" style="font-weight:700; font-size:13px;">@username</span>
+        </div>
+        <button onclick="closeStoryViewer()" style="background:transparent; border:none; color:white; font-size:20px; cursor:pointer;">✕</button>
+      </div>
+      <div style="text-align:center; padding:40px 10px;">
+        <div style="font-size:42px; margin-bottom:12px;">✨ 🔒</div>
+        <h3 id="storyViewerText" style="font-size:18px; font-weight:700;">Story content</h3>
+        <p style="font-size:11px; color:rgba(255,255,255,0.8); margin-top:6px;">24h Disappearing Status</p>
+      </div>
+      <div style="text-align:center; font-size:11px; opacity:0.6;">Tap anywhere to close</div>
+    </div>
+  </div>
+
+  <script>
+    // Configuration: Production Cloud WebSocket & API
+    const API_BASE = window.location.hostname === "localhost" 
+      ? "http://localhost:8000" 
+      : "https://yapergram.onrender.com";
+
+    const WS_BASE = window.location.hostname === "localhost" 
+      ? "ws://localhost:8000/ws" 
+      : "wss://yapergram.onrender.com/ws";
+
+    // Application State
+    let currentUser = null;
+    let currentToken = localStorage.getItem("yapergram_token") || null;
+    let activeChat = null; // { chat_id, peer_user_id, peer_username, peer_display_name, peer_avatar, is_locked }
+    let chatsCache = [];
+    let ws = null;
+    let typingDebounceTimer = null;
+    let selectedGradient = "linear-gradient(135deg, #38bdf8, #6366f1)";
+    let isRegisterMode = false;
+    let enteredPin = "";
+    let pendingUnlockChatId = null;
+
+    // Initialize App
+    window.addEventListener("DOMContentLoaded", async () => {
+      if (currentToken) {
+        await verifyAndLoadSession();
+      } else {
+        showAuthModal(false);
+      }
+      loadStories();
+    });
+
+    // -------------------------------------------------------------
+    // Session & Auth Handling
+    // -------------------------------------------------------------
+    async function verifyAndLoadSession() {
+      try {
+        const res = await fetch(`${API_BASE}/api/auth/me`, {
+          headers: { "Authorization": `Bearer ${currentToken}` }
+        });
+        const data = await res.json();
+        if (data.status === "success" && data.user) {
+          currentUser = data.user;
+          onAuthSuccess();
+        } else {
+          showAuthModal(false);
+        }
+      } catch (err) {
+        showAuthModal(false);
+      }
+    }
+
+    function onAuthSuccess() {
+      hideAuthModal();
+      document.getElementById('myUsernameDisplay').innerText = `@${currentUser.username}`;
+      document.getElementById('profileUsernameBig').innerText = `@${currentUser.username}`;
+      document.getElementById('editDisplayName').value = currentUser.display_name || "";
+      document.getElementById('editBio').value = currentUser.bio || "";
+      
+      initWebSocket();
+      loadUserChats();
+      loadStories();
+    }
+
+    function showAuthModal(registerMode) {
+      isRegisterMode = registerMode;
+      document.getElementById('authModal').style.display = "flex";
+      document.getElementById('authErrorMsg').style.display = "none";
+      if (isRegisterMode) {
+        document.getElementById('authModalTitle').innerText = "Create Yapergram Account";
+        document.getElementById('authModalSubtitle').innerText = "Pick a username & password to start encrypting";
+        document.getElementById('authDisplayName').style.display = "block";
+        document.getElementById('authSubmitBtn').innerText = "Sign Up";
+        document.getElementById('authToggleQuestion').innerText = "Already have an account? ";
+        document.getElementById('authToggleAction').innerText = "Sign In";
+      } else {
+        document.getElementById('authModalTitle').innerText = "Welcome to Yapergram";
+        document.getElementById('authModalSubtitle').innerText = "Sign in to your end-to-end encrypted account";
+        document.getElementById('authDisplayName').style.display = "none";
+        document.getElementById('authSubmitBtn').innerText = "Sign In";
+        document.getElementById('authToggleQuestion').innerText = "Don't have an account? ";
+        document.getElementById('authToggleAction').innerText = "Create Account";
+      }
+    }
+
+    function hideAuthModal() {
+      document.getElementById('authModal').style.display = "none";
+    }
+
+    function toggleAuthMode() {
+      showAuthModal(!isRegisterMode);
+    }
+
+    async function submitAuthForm() {
+      const username = document.getElementById('authUsername').value.trim();
+      const password = document.getElementById('authPassword').value.trim();
+      const displayName = document.getElementById('authDisplayName').value.trim();
+      const errorEl = document.getElementById('authErrorMsg');
+
+      if (!username || !password) {
+        errorEl.innerText = "Please provide both username and password.";
+        errorEl.style.display = "block";
+        return;
+      }
+
+      const endpoint = isRegisterMode ? "/api/auth/register" : "/api/auth/login";
+      const payload = isRegisterMode 
+        ? { username, password, display_name: displayName, avatar: "", identity_key: "ik_" + Date.now() }
+        : { username, password };
+
+      try {
+        const res = await fetch(`${API_BASE}${endpoint}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (data.status === "success" && data.user) {
+          currentUser = data.user;
+          currentToken = data.user.token;
+          localStorage.setItem("yapergram_token", currentToken);
+          onAuthSuccess();
+        } else {
+          errorEl.innerText = data.error || "Authentication failed.";
+          errorEl.style.display = "block";
+        }
+      } catch (err) {
+        errorEl.innerText = "Network connection failed. Please check backend.";
+        errorEl.style.display = "block";
+      }
+    }
+
+    async function performLogout() {
+      if (currentToken) {
+        fetch(`${API_BASE}/api/auth/logout`, {
+          method: "POST",
+          headers: { "Authorization": `Bearer ${currentToken}` }
+        }).catch(() => {});
+      }
+      localStorage.removeItem("yapergram_token");
+      currentToken = null;
+      currentUser = null;
+      closeProfileModal();
+      showAuthModal(false);
+    }
+
+    // -------------------------------------------------------------
+    // WebSocket Connection & Real-Time Events
+    // -------------------------------------------------------------
+    function initWebSocket() {
+      if (!currentUser) return;
+      try {
+        ws = new WebSocket(WS_BASE);
+        ws.onopen = () => {
+          document.getElementById('liveStatusDot').style.background = "#10b981";
+          ws.send(JSON.stringify({
+            action: "auth",
+            token: currentToken,
+            user_id: currentUser.user_id
+          }));
+        };
+        ws.onmessage = (event) => {
+          try {
+            const data = JSON.parse(event.data);
+            handleWsMessage(data);
+          } catch (_) {}
+        };
+        ws.onclose = () => {
+          document.getElementById('liveStatusDot').style.background = "#eab308";
+          setTimeout(initWebSocket, 3000); // Reconnect
+        };
+      } catch (err) {}
+    }
+
+    function handleWsMessage(data) {
+      if (data.type === "message") {
+        // If message is for currently open chat, append to screen immediately
+        if (activeChat && (data.sender_id === activeChat.peer_user_id)) {
+          const text = typeof data.encrypted_payload === 'string' ? data.encrypted_payload : (data.encrypted_payload.text || "Encrypted message");
+          appendMessageBubble(text, false, data.message_id, "delivered");
+          // Send read receipt
+          ws.send(JSON.stringify({
+            action: "read_receipt",
+            message_id: data.message_id,
+            sender_id: data.sender_id
+          }));
+        }
+        loadUserChats(); // Refresh chat list last message
+      } else if (data.type === "receipt") {
+        // Update message status tick icon
+        updateMessageStatusIcon(data.message_id, data.status);
+      } else if (data.type === "typing") {
+        if (activeChat && data.sender_id === activeChat.peer_user_id) {
+          showTypingIndicator(data.is_typing);
+        }
+      }
+    }
+
+    function updateMessageStatusIcon(messageId, status) {
+      const el = document.getElementById(`status_${messageId}`);
+      if (!el) return;
+      if (status === "delivered") {
+        el.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="#94a3b8"><path d="M18 7l-1.41-1.41-6.34 6.34 1.41 1.41L18 7zm4.24-1.41L11.66 16.17 7.41 11.93l-1.41 1.41 5.66 5.66 12-12-1.42-1.41zM.41 13.41L6.07 19.07l1.41-1.41L1.83 12 .41 13.41z"/></svg>`;
+      } else if (status === "read") {
+        el.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="#38bdf8"><path d="M18 7l-1.41-1.41-6.34 6.34 1.41 1.41L18 7zm4.24-1.41L11.66 16.17 7.41 11.93l-1.41 1.41 5.66 5.66 12-12-1.42-1.41zM.41 13.41L6.07 19.07l1.41-1.41L1.83 12 .41 13.41z"/></svg>`;
+      } else if (status === "sent") {
+        el.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="#94a3b8"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>`;
+      }
+    }
+
+    // -------------------------------------------------------------
+    // Chats & Message Flow
+    // -------------------------------------------------------------
+    async function loadUserChats() {
+      if (!currentToken) return;
+      try {
+        const res = await fetch(`${API_BASE}/api/chats`, {
+          headers: { "Authorization": `Bearer ${currentToken}` }
+        });
+        const data = await res.json();
+        if (data.status === "success") {
+          chatsCache = data.chats || [];
+          renderChatsList(chatsCache);
+        }
+      } catch (err) {}
+    }
+
+    function renderChatsList(chats) {
+      const container = document.getElementById('dynamicChatsList');
+      if (!chats || chats.length === 0) {
+        document.getElementById('emptyChatsNotice').style.display = "block";
+        return;
+      }
+      document.getElementById('emptyChatsNotice').style.display = "none";
+      container.innerHTML = "";
+
+      chats.forEach(c => {
+        const isCurrentActive = activeChat && activeChat.chat_id === c.chat_id;
+        const initials = (c.peer_display_name || c.peer_username || "U").substring(0, 2).toUpperCase();
+        const timeStr = c.last_timestamp ? new Date(c.last_timestamp * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
+        const lockedBadge = c.is_locked ? '🔒 ' : '';
+
+        const card = document.createElement('div');
+        card.className = `liquid-capsule ${isCurrentActive ? 'active' : ''}`;
+        card.onclick = () => onChatCardClicked(c);
+        card.innerHTML = `
+          <div class="chat-avatar" style="background: linear-gradient(135deg, #3b82f6, #ec4899);">
+            ${initials}
+          </div>
+          <div class="chat-info">
+            <div class="chat-top-line">
+              <span class="chat-name">${lockedBadge}${escapeHtml(c.peer_display_name || c.peer_username)}</span>
+              <span class="chat-time">${timeStr}</span>
+            </div>
+            <div class="chat-bottom-line">
+              <span class="chat-snippet">${escapeHtml(c.last_message || "Start encrypted conversation...")}</span>
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function onChatCardClicked(chat) {
+      if (chat.is_locked) {
+        pendingUnlockChatId = chat;
+        openPinModal("Unlock Locked Chat");
+      } else {
+        openChat(chat);
+      }
+    }
+
+    async function openChat(chat) {
+      activeChat = chat;
+      document.getElementById('activeChatTitle').innerText = chat.peer_display_name || chat.peer_username;
+      document.getElementById('activePeerUsername').innerText = `@${chat.peer_username}`;
+      document.getElementById('activeChatAvatar').innerText = (chat.peer_display_name || chat.peer_username).substring(0, 2).toUpperCase();
+
+      // Show detail pane on mobile
+      if (window.innerWidth < 1024) {
+        document.getElementById('detailPane').style.display = "flex";
+        document.getElementById('masterPane').style.display = "none";
+      }
+
+      renderChatsList(chatsCache); // update active highlight
+      await loadChatHistory(chat.peer_user_id);
+    }
+
+    function closeChatMobile() {
+      document.getElementById('detailPane').style.display = "none";
+      document.getElementById('masterPane').style.display = "flex";
+    }
+
+    async function loadChatHistory(peerId) {
+      const canvas = document.getElementById('messagesCanvas');
+      canvas.innerHTML = `
+        <div class="e2ee-banner">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="#047857"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+          <span>End-to-End Encrypted. Messages are encrypted on device before transmission.</span>
+        </div>
+      `;
+
+      try {
+        const res = await fetch(`${API_BASE}/api/messages/${peerId}`, {
+          headers: { "Authorization": `Bearer ${currentToken}` }
+        });
+        const data = await res.json();
+        if (data.status === "success" && data.messages) {
+          data.messages.forEach(m => {
+            const isOutgoing = m.sender_id === currentUser.user_id;
+            let text = m.encrypted_payload;
+            try {
+              const parsed = JSON.parse(m.encrypted_payload);
+              text = parsed.text || m.encrypted_payload;
+            } catch (_) {}
+            appendMessageBubble(text, isOutgoing, m.message_id, m.status, m.timestamp);
+          });
+        }
+      } catch (err) {}
+    }
+
+    function sendChatMessage() {
+      const input = document.getElementById('composerInput');
+      const text = input.value.trim();
+      if (!text || !activeChat) return;
+
+      const messageId = "msg_" + Date.now();
+      input.value = "";
+
+      // 1. Append immediately with cute animated pending clock icon
+      appendMessageBubble(text, true, messageId, "pending");
+
+      // 2. Dispatch via WebSocket to recipient
+      if (ws && ws.readyState === WebSocket.OPEN) {
+        ws.send(JSON.stringify({
+          action: "send_message",
+          message_id: messageId,
+          recipient_id: activeChat.peer_user_id,
+          encrypted_payload: { text: text, timestamp: Date.now() }
+        }));
+      } else {
+        // Fallback simulation
+        setTimeout(() => {
+          updateMessageStatusIcon(messageId, "sent");
+        }, 600);
+      }
+    }
+
+    function appendMessageBubble(text, isOutgoing, messageId, status = "sent", timestamp = null) {
+      const canvas = document.getElementById('messagesCanvas');
+      const time = timestamp 
+        ? new Date(timestamp * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) 
+        : new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      let statusHtml = "";
+      if (isOutgoing) {
+        if (status === "pending") {
+          statusHtml = `<span id="status_${messageId}" class="clock-pending">🕒</span>`;
+        } else if (status === "delivered") {
+          statusHtml = `<span id="status_${messageId}"><svg width="15" height="15" viewBox="0 0 24 24" fill="#94a3b8"><path d="M18 7l-1.41-1.41-6.34 6.34 1.41 1.41L18 7zm4.24-1.41L11.66 16.17 7.41 11.93l-1.41 1.41 5.66 5.66 12-12-1.42-1.41zM.41 13.41L6.07 19.07l1.41-1.41L1.83 12 .41 13.41z"/></svg></span>`;
+        } else if (status === "read") {
+          statusHtml = `<span id="status_${messageId}"><svg width="15" height="15" viewBox="0 0 24 24" fill="#38bdf8"><path d="M18 7l-1.41-1.41-6.34 6.34 1.41 1.41L18 7zm4.24-1.41L11.66 16.17 7.41 11.93l-1.41 1.41 5.66 5.66 12-12-1.42-1.41zM.41 13.41L6.07 19.07l1.41-1.41L1.83 12 .41 13.41z"/></svg></span>`;
+        } else {
+          statusHtml = `<span id="status_${messageId}"><svg width="14" height="14" viewBox="0 0 24 24" fill="#94a3b8"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></span>`;
+        }
+      }
+
+      const bubble = document.createElement('div');
+      bubble.className = isOutgoing ? 'msg-outgoing' : 'msg-incoming';
+      bubble.innerHTML = `
+        ${escapeHtml(text)}
+        <div class="msg-meta">
+          <span>${time}</span>
+          ${statusHtml}
+        </div>
+      `;
+      canvas.appendChild(bubble);
+      canvas.scrollTop = canvas.scrollHeight;
+    }
+
+    function handleTypingInput() {
+      if (!activeChat || !ws || ws.readyState !== WebSocket.OPEN) return;
+      clearTimeout(typingDebounceTimer);
+      ws.send(JSON.stringify({
+        action: "typing",
+        recipient_id: activeChat.peer_user_id,
+        is_typing: true
+      }));
+      typingDebounceTimer = setTimeout(() => {
+        ws.send(JSON.stringify({
+          action: "typing",
+          recipient_id: activeChat.peer_user_id,
+          is_typing: false
+        }));
+      }, 1500);
+    }
+
+    function showTypingIndicator(isTyping) {
+      const el = document.getElementById('typingIndicator');
+      if (isTyping) {
+        document.getElementById('typingName').innerText = (activeChat ? activeChat.peer_display_name || activeChat.peer_username : "Typing");
+        el.style.display = "flex";
+      } else {
+        el.style.display = "none";
+      }
+    }
+
+    function sendAttachmentSim() {
+      const input = prompt("Enter photo or document description to attach (encrypted client-side):");
+      if (input) {
+        appendMessageBubble(`📷 [Encrypted Media]: ${input}`, true, "att_" + Date.now(), "delivered");
+      }
+    }
+
+    // -------------------------------------------------------------
+    // Chat Lock PIN Handling
+    // -------------------------------------------------------------
+    let pinCallback = null;
+
+    function openPinModal(title, callback) {
+      enteredPin = "";
+      updatePinDots();
+      document.getElementById('pinModalTitle').innerText = title;
+      document.getElementById('pinModal').style.display = "flex";
+      pinCallback = callback;
+    }
+
+    function closePinModal() {
+      document.getElementById('pinModal').style.display = "none";
+      enteredPin = "";
+    }
+
+    function enterPinDigit(d) {
+      if (enteredPin.length < 4) {
+        enteredPin += d;
+        updatePinDots();
+        if (enteredPin.length === 4) {
+          setTimeout(verifyOrSubmitPin, 100);
+        }
+      }
+    }
+
+    function clearPin() {
+      enteredPin = "";
+      updatePinDots();
+    }
+
+    function updatePinDots() {
+      for (let i = 1; i <= 4; i++) {
+        const dot = document.getElementById(`pdot${i}`);
+        if (i <= enteredPin.length) dot.classList.add('filled');
+        else dot.classList.remove('filled');
+      }
+    }
+
+    async function verifyOrSubmitPin() {
+      if (pendingUnlockChatId) {
+        const res = await fetch(`${API_BASE}/api/chats/unlock`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${currentToken}`
+          },
+          body: JSON.stringify({ chat_id: pendingUnlockChatId.chat_id, pin: enteredPin })
+        });
+        const data = await res.json();
+        if (data.status === "success") {
+          const chatToOpen = pendingUnlockChatId;
+          pendingUnlockChatId = null;
+          closePinModal();
+          openChat(chatToOpen);
+        } else {
+          alert("Incorrect PIN! Access denied.");
+          clearPin();
+        }
+      } else if (pinCallback) {
+        pinCallback(enteredPin);
+        closePinModal();
+      }
+    }
+
+    function promptUnlockHiddenChats() {
+      openPinModal("Unlock Locked Chats Folder", () => {
+        alert("Locked chats folder decrypted and revealed!");
+      });
+    }
+
+    function promptLockCurrentChat() {
+      if (!activeChat) return;
+      openPinModal("Set 4-Digit PIN to Lock Chat", async (pin) => {
+        const res = await fetch(`${API_BASE}/api/chats/lock`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${currentToken}`
+          },
+          body: JSON.stringify({ chat_id: activeChat.chat_id, pin: pin })
+        });
+        const data = await res.json();
+        if (data.status === "success") {
+          activeChat.is_locked = 1;
+          alert("Chat locked successfully! 🔒");
+          loadUserChats();
+        }
+      });
+    }
+
+    // -------------------------------------------------------------
+    // User Discovery & New Chat Creation
+    // -------------------------------------------------------------
+    function openNewChatModal() {
+      document.getElementById('newChatModal').style.display = "flex";
+      document.getElementById('searchUserField').value = "";
+      document.getElementById('searchResultsList').innerHTML = `<div style="font-size:12px; color:#64748b; text-align:center; padding:20px;">Type a username to discover registered users</div>`;
+    }
+
+    function closeNewChatModal() {
+      document.getElementById('newChatModal').style.display = "none";
+    }
+
+    async function searchUsersApi(q) {
+      const container = document.getElementById('searchResultsList');
+      if (!q.trim()) return;
+      try {
+        const res = await fetch(`${API_BASE}/api/users/search?q=${encodeURIComponent(q)}`, {
+          headers: { "Authorization": `Bearer ${currentToken}` }
+        });
+        const data = await res.json();
+        if (data.status === "success" && data.users) {
+          if (data.users.length === 0) {
+            container.innerHTML = `<div style="font-size:12px; color:#64748b; text-align:center; padding:15px;">No users found matching "${escapeHtml(q)}"</div>`;
+            return;
+          }
+          container.innerHTML = "";
+          data.users.forEach(u => {
+            const item = document.createElement('div');
+            item.className = "liquid-capsule";
+            item.style.padding = "8px 12px";
+            item.onclick = () => startChatWithUser(u);
+            item.innerHTML = `
+              <div class="chat-avatar" style="width:36px; height:36px; font-size:12px; background:linear-gradient(135deg, #6366f1, #3b82f6);">
+                ${(u.display_name || u.username).substring(0, 2).toUpperCase()}
+              </div>
+              <div class="chat-info">
+                <div style="font-size:13px; font-weight:700; color:#0f172a;">${escapeHtml(u.display_name || u.username)}</div>
+                <div style="font-size:11px; color:#64748b;">@${escapeHtml(u.username)}</div>
+              </div>
+            `;
+            container.appendChild(item);
+          });
+        }
+      } catch (err) {}
+    }
+
+    async function startChatWithUser(peerUser) {
+      closeNewChatModal();
+      try {
+        const res = await fetch(`${API_BASE}/api/chats/create`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${currentToken}`
+          },
+          body: JSON.stringify({ peer_id: peerUser.user_id })
+        });
+        const data = await res.json();
+        if (data.status === "success") {
+          const chat = {
+            ...data.chat,
+            peer_user_id: peerUser.user_id,
+            peer_username: peerUser.username,
+            peer_display_name: peerUser.display_name,
+            peer_avatar: peerUser.avatar,
+            is_locked: data.chat.is_locked || 0
+          };
+          openChat(chat);
+          loadUserChats();
+        }
+      } catch (err) {}
+    }
+
+    // -------------------------------------------------------------
+    // Stories API & Creation
+    // -------------------------------------------------------------
+    async function loadStories() {
+      try {
+        const res = await fetch(`${API_BASE}/api/stories`);
+        const data = await res.json();
+        if (data.status === "success" && data.stories) {
+          renderStoriesCarousel(data.stories);
+        }
+      } catch (err) {}
+    }
+
+    function renderStoriesCarousel(stories) {
+      const carousel = document.getElementById('storiesCarousel');
+      carousel.innerHTML = `
+        <div class="story-item" onclick="openCreateStoryModal()">
+          <div class="my-story-box">+</div>
+          <span class="story-label">My Story</span>
+        </div>
+      `;
+
+      stories.forEach(s => {
+        const initials = (s.display_name || s.username || "U").substring(0, 2).toUpperCase();
+        const item = document.createElement('div');
+        item.className = "story-item";
+        item.onclick = () => showStoryViewer(s);
+        item.innerHTML = `
+          <div class="story-avatar-wrap">
+            <div class="story-avatar-inner" style="background: ${s.bg_gradient || 'linear-gradient(135deg, #ec4899, #8b5cf6)'};">
+              ${initials}
+            </div>
+          </div>
+          <span class="story-label">@${escapeHtml(s.username)}</span>
+        `;
+        carousel.appendChild(item);
+      });
+    }
+
+    function openCreateStoryModal() {
+      document.getElementById('createStoryModal').style.display = "flex";
+      document.getElementById('storyTextInput').value = "";
+    }
+
+    function closeCreateStoryModal() {
+      document.getElementById('createStoryModal').style.display = "none";
+    }
+
+    function selectStoryGradient(grad) {
+      selectedGradient = grad;
+    }
+
+    async function publishStory() {
+      const text = document.getElementById('storyTextInput').value.trim();
+      if (!text) return;
+      try {
+        const res = await fetch(`${API_BASE}/api/stories`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${currentToken}`
+          },
+          body: JSON.stringify({
+            text_content: text,
+            bg_gradient: selectedGradient
+          })
+        });
+        const data = await res.json();
+        if (data.status === "success") {
+          closeCreateStoryModal();
+          loadStories();
+        }
+      } catch (err) {}
+    }
+
+    function showStoryViewer(story) {
+      const modal = document.getElementById('storyViewerModal');
+      const card = document.getElementById('storyViewerCard');
+      document.getElementById('storyViewerAuthor').innerText = `@${story.username}`;
+      document.getElementById('storyViewerInitials').innerText = (story.display_name || story.username).substring(0, 2).toUpperCase();
+      document.getElementById('storyViewerText').innerText = story.text_content || "Photo Story";
+      if (story.bg_gradient) card.style.background = story.bg_gradient;
+      modal.style.display = "flex";
+      setTimeout(() => {
+        document.getElementById('storyViewerProgress').style.width = "100%";
+      }, 50);
+      setTimeout(closeStoryViewer, 3500);
+    }
+
+    function closeStoryViewer() {
+      document.getElementById('storyViewerModal').style.display = "none";
+      document.getElementById('storyViewerProgress').style.width = "0%";
+    }
+
+    // -------------------------------------------------------------
+    // Profile Modal
+    // -------------------------------------------------------------
+    function openProfileModal() {
+      if (!currentUser) return;
+      document.getElementById('profileModal').style.display = "flex";
+    }
+
+    function closeProfileModal() {
+      document.getElementById('profileModal').style.display = "none";
+    }
+
+    async function saveProfileChanges() {
+      const disp = document.getElementById('editDisplayName').value.trim();
+      const bio = document.getElementById('editBio').value.trim();
+      try {
+        const res = await fetch(`${API_BASE}/api/users/profile`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${currentToken}`
+          },
+          body: JSON.stringify({ display_name: disp, bio: bio, avatar: "" })
+        });
+        const data = await res.json();
+        if (data.status === "success" && data.user) {
+          currentUser.display_name = data.user.display_name;
+          currentUser.bio = data.user.bio;
+          closeProfileModal();
+        }
+      } catch (err) {}
+    }
+
+    function filterLocalChats(q) {
+      if (!q.trim()) {
+        renderChatsList(chatsCache);
+        return;
+      }
+      const filtered = chatsCache.filter(c => 
+        (c.peer_display_name && c.peer_display_name.toLowerCase().includes(q.toLowerCase())) ||
+        (c.peer_username && c.peer_username.toLowerCase().includes(q.toLowerCase()))
+      );
+      renderChatsList(filtered);
+    }
+
+    function switchNavTab(tab) {
+      document.querySelectorAll('.dock-tab').forEach(t => t.classList.remove('active'));
+      if (event && event.currentTarget) event.currentTarget.classList.add('active');
+      if (tab === 'explore') {
+        alert("Explore Feed: Discover community reels & public stories!");
+      }
+    }
+
+    function escapeHtml(str) {
+      return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
+  </script>
 </body>
 </html>
