@@ -1,0 +1,24 @@
+{
+  "name": "Yepigram - E2EE Social & Chat",
+  "short_name": "Yepigram",
+  "description": "End-to-End Encrypted Liquid Glass Real-Time Messaging and Social Media",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#818cf8",
+  "theme_color": "#a78bfa",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
