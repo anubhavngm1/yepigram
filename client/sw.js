@@ -1,5 +1,5 @@
-// Yepigram Service Worker - Offline Cache & VAPID Web Push Notifications
-const CACHE_NAME = 'yepigram-v1';
+// Yapergram Service Worker - Offline Cache & VAPID Web Push Notifications
+const CACHE_NAME = 'yapergram-v2';
 const ASSETS = [
   './index.html',
   './manifest.json'
@@ -27,9 +27,9 @@ self.addEventListener('fetch', (e) => {
   );
 });
 
-// VAPID Web Push Notification Handler (Free for iPad & Web)
+// VAPID Web Push Notification Handler
 self.addEventListener('push', (e) => {
-  let data = { title: 'Yepigram Encrypted Message', body: 'You have a new encrypted message.' };
+  let data = { title: 'Yapergram Encrypted Message', body: 'You have a new encrypted message.' };
   if (e.data) {
     try {
       data = e.data.json();
