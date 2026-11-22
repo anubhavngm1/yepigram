@@ -3,24 +3,22 @@ import json
 import logging
 import os
 import time
-from aiohttp import web
-import websockets
+from aiohttp import web, WSMsgType
 from database import init_db, register_user, save_prekeys, get_prekey_bundle, queue_offline_message, fetch_queued_messages
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 
-# In-memory registry of active WebSocket sessions: user_id -> websocket
 ACTIVE_SESSIONS = {}
 START_TIME = time.time()
 
 # -------------------------------------------------------------
-# HTTP REST API Handlers (Health check & Pre-key registration)
+# HTTP REST API Handlers
 # -------------------------------------------------------------
 async def health_check(request):
     """Keep-alive endpoint for free hosting (pinged by UptimeRobot)."""
     return web.json_response({
         "status": "healthy",
-        "service": "Yepigram E2EE Broker",
+        "service": "Yapergram E2EE Broker",
         "uptime_seconds": int(time.time() - START_TIME),
         "active_users": len(ACTIVE_SESSIONS)
     })
@@ -53,129 +51,124 @@ async def register_prekeys(request):
     return web.json_response({"status": "success", "user_id": user_id})
 
 # -------------------------------------------------------------
-# Real-Time WebSocket Broker Handlers
+# Integrated WebSocket Handler (Runs on unified Cloud PORT)
 # -------------------------------------------------------------
-async def ws_handler(websocket):
+async def websocket_handler(request):
+    ws = web.WebSocketResponse()
+    await ws.prepare(request)
     user_id = None
+
     try:
-        async for raw_message in websocket:
-            try:
-                msg = json.loads(raw_message)
-            except Exception:
-                continue
-
-            action = msg.get("action")
-
-            # 1. User Authenticate / Connect
-            if action == "auth":
-                user_id = msg.get("user_id")
-                if not user_id:
+        async for msg in ws:
+            if msg.type == WSMsgType.TEXT:
+                try:
+                    data = json.loads(msg.data)
+                except Exception:
                     continue
-                ACTIVE_SESSIONS[user_id] = websocket
-                logging.info(f"User connected & authenticated: {user_id}")
-                
-                # Acknowledge connection
-                await websocket.send(json.dumps({
-                    "type": "auth_ack",
-                    "status": "connected",
-                    "user_id": user_id
-                }))
 
-                # Flush any queued offline messages
-                offline_msgs = fetch_queued_messages(user_id)
-                if offline_msgs:
-                    logging.info(f"Flushing {len(offline_msgs)} queued messages to {user_id}")
-                    for queued in offline_msgs:
-                        await websocket.send(json.dumps({
+                action = data.get("action")
+
+                # 1. Authenticate / Connect
+                if action == "auth":
+                    user_id = data.get("user_id")
+                    if not user_id:
+                        continue
+                    ACTIVE_SESSIONS[user_id] = ws
+                    logging.info(f"User connected: {user_id}")
+
+                    await ws.send_json({
+                        "type": "auth_ack",
+                        "status": "connected",
+                        "user_id": user_id
+                    })
+
+                    # Flush queued offline messages
+                    offline_msgs = fetch_queued_messages(user_id)
+                    if offline_msgs:
+                        logging.info(f"Flushing {len(offline_msgs)} queued messages to {user_id}")
+                        for q in offline_msgs:
+                            await ws.send_json({
+                                "type": "message",
+                                "message_id": q["message_id"],
+                                "sender_id": q["sender_id"],
+                                "encrypted_payload": q["encrypted_payload"],
+                                "timestamp": q["timestamp"],
+                                "is_offline_replay": True
+                            })
+
+                # 2. Encrypted Message Dispatch
+                elif action == "send_message":
+                    sender_id = user_id or data.get("sender_id")
+                    recipient_id = data.get("recipient_id")
+                    message_id = data.get("message_id")
+                    encrypted_payload = data.get("encrypted_payload")
+
+                    if not recipient_id or not encrypted_payload:
+                        continue
+
+                    recipient_ws = ACTIVE_SESSIONS.get(recipient_id)
+                    if recipient_ws and not recipient_ws.closed:
+                        await recipient_ws.send_json({
                             "type": "message",
-                            "message_id": queued["message_id"],
-                            "sender_id": queued["sender_id"],
-                            "encrypted_payload": queued["encrypted_payload"],
-                            "timestamp": queued["timestamp"],
-                            "is_offline_replay": True
-                        }))
+                            "message_id": message_id,
+                            "sender_id": sender_id,
+                            "encrypted_payload": encrypted_payload,
+                            "timestamp": int(time.time())
+                        })
+                        await ws.send_json({
+                            "type": "receipt",
+                            "message_id": message_id,
+                            "status": "delivered",
+                            "recipient_id": recipient_id
+                        })
+                    else:
+                        queue_offline_message(message_id, recipient_id, sender_id, json.dumps(encrypted_payload))
+                        logging.info(f"Queued offline message {message_id} for {recipient_id}")
+                        await ws.send_json({
+                            "type": "receipt",
+                            "message_id": message_id,
+                            "status": "sent",
+                            "recipient_id": recipient_id
+                        })
 
-            # 2. Encrypted Message Dispatch (Zero-Knowledge Routing)
-            elif action == "send_message":
-                sender_id = user_id or msg.get("sender_id")
-                recipient_id = msg.get("recipient_id")
-                message_id = msg.get("message_id")
-                encrypted_payload = msg.get("encrypted_payload")
+                # 3. Read Receipts
+                elif action == "read_receipt":
+                    sender_id = data.get("sender_id")
+                    message_id = data.get("message_id")
+                    sender_ws = ACTIVE_SESSIONS.get(sender_id)
+                    if sender_ws and not sender_ws.closed:
+                        await sender_ws.send_json({
+                            "type": "receipt",
+                            "message_id": message_id,
+                            "status": "read",
+                            "reader_id": user_id
+                        })
 
-                if not recipient_id or not encrypted_payload:
-                    continue
+                # 4. Typing Indicator
+                elif action == "typing":
+                    recipient_id = data.get("recipient_id")
+                    rec_ws = ACTIVE_SESSIONS.get(recipient_id)
+                    if rec_ws and not rec_ws.closed:
+                        await rec_ws.send_json({
+                            "type": "typing",
+                            "sender_id": user_id,
+                            "is_typing": data.get("is_typing", True)
+                        })
 
-                # Is recipient online?
-                recipient_ws = ACTIVE_SESSIONS.get(recipient_id)
-                if recipient_ws and recipient_ws.open:
-                    # Direct instant delivery
-                    await recipient_ws.send(json.dumps({
-                        "type": "message",
-                        "message_id": message_id,
-                        "sender_id": sender_id,
-                        "encrypted_payload": encrypted_payload,
-                        "timestamp": int(time.time())
-                    }))
-                    # Send delivery receipt back to sender
-                    await websocket.send(json.dumps({
-                        "type": "receipt",
-                        "message_id": message_id,
-                        "status": "delivered",
-                        "recipient_id": recipient_id
-                    }))
-                else:
-                    # Recipient is offline -> Queue in SQLite zero-knowledge storage
-                    queue_offline_message(message_id, recipient_id, sender_id, encrypted_payload)
-                    logging.info(f"Queued offline message {message_id} for {recipient_id}")
-                    # Send 'sent' confirmation back to sender
-                    await websocket.send(json.dumps({
-                        "type": "receipt",
-                        "message_id": message_id,
-                        "status": "sent",
-                        "recipient_id": recipient_id
-                    }))
+            elif msg.type == WSMsgType.ERROR:
+                logging.error(f"WebSocket connection closed with exception: {ws.exception()}")
 
-            # 3. Read Receipts (Double Blue Ticks)
-            elif action == "read_receipt":
-                sender_id = msg.get("sender_id")
-                message_id = msg.get("message_id")
-                sender_ws = ACTIVE_SESSIONS.get(sender_id)
-                if sender_ws and sender_ws.open:
-                    await sender_ws.send(json.dumps({
-                        "type": "receipt",
-                        "message_id": message_id,
-                        "status": "read",
-                        "reader_id": user_id
-                    }))
-
-            # 4. Typing Indicator
-            elif action == "typing":
-                recipient_id = msg.get("recipient_id")
-                is_typing = msg.get("is_typing", True)
-                rec_ws = ACTIVE_SESSIONS.get(recipient_id)
-                if rec_ws and rec_ws.open:
-                    await rec_ws.send(json.dumps({
-                        "type": "typing",
-                        "sender_id": user_id,
-                        "is_typing": is_typing
-                    }))
-
-    except websockets.exceptions.ConnectionClosed:
-        pass
     finally:
         if user_id and user_id in ACTIVE_SESSIONS:
             del ACTIVE_SESSIONS[user_id]
             logging.info(f"User disconnected: {user_id}")
 
-# -------------------------------------------------------------
-# Main Combined Server Runner
-# -------------------------------------------------------------
-async def main():
-    init_db()
+    return ws
 
-    # HTTP Server on Port 8000
+def create_app():
+    init_db()
     app = web.Application()
-    # CORS middleware
+
     async def cors_middleware(app, handler):
         async def middleware(request):
             if request.method == "OPTIONS":
@@ -193,20 +186,11 @@ async def main():
     app.router.add_get("/healthz", health_check)
     app.router.add_get("/api/prekeys/{user_id}", get_user_prekeys)
     app.router.add_post("/api/prekeys", register_prekeys)
-
-    http_runner = web.AppRunner(app)
-    await http_runner.setup()
-    http_site = web.TCPSite(http_runner, "0.0.0.0", 8000)
-    await http_site.start()
-    logging.info("Yepigram HTTP REST & Keep-Alive server running on http://0.0.0.0:8000")
-
-    # WebSocket Server on Port 8765
-    async with websockets.serve(ws_handler, "0.0.0.0", 8765):
-        logging.info("Yepigram E2EE WebSocket Broker running on ws://0.0.0.0:8765")
-        await asyncio.Future() # run forever
+    app.router.add_get("/ws", websocket_handler)
+    return app
 
 if __name__ == "__main__":
-    try:
-        asyncio.run(main())
-    except KeyboardInterrupt:
-        logging.info("Server terminated.")
+    port = int(os.environ.get("PORT", 8000))
+    app = create_app()
+    logging.info(f"Starting Yapergram Unified Server on port {port}")
+    web.run_app(app, host="0.0.0.0", port=port)
